@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{6560C745-62A1-46C9-B807-0B4EEC01F3CD}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>TopohitEscritorio</RootNamespace>
+    <AssemblyName>TopohitEscritorio</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Net.Http.Json">
+      <Version>8.0.1</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Modelos\DificultadContrarreloj.cs" />
+    <Compile Include="Modelos\DificultadInfinito.cs" />
+    <Compile Include="Modelos\ModelosApi.cs" />
+    <Compile Include="Modelos\NivelHistoria.cs" />
+    <Compile Include="Modelos\Partida.cs" />
+    <Compile Include="Modelos\Usuario.cs" />
+    <Compile Include="Pantallas\FormCambiarContrasena.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Pantallas\FormCambiarContrasena.Designer.cs">
+      <DependentUpon>FormCambiarContrasena.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Pantallas\FormEditarJugador.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Pantallas\FormEditarJugador.Designer.cs">
+      <DependentUpon>FormEditarJugador.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Pantallas\FormLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Pantallas\FormLogin.Designer.cs">
+      <DependentUpon>FormLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Pantallas\FormPrincipal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Pantallas\FormPrincipal.Designer.cs">
+      <DependentUpon>FormPrincipal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Pantallas\FormJugadores.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Pantallas\FormJugadores.Designer.cs">
+      <DependentUpon>FormJugadores.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Pantallas\FormModos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Pantallas\FormModos.Designer.cs">
+      <DependentUpon>FormModos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Pantallas\FormEstadisticas.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Pantallas\FormEstadisticas.Designer.cs">
+      <DependentUpon>FormEstadisticas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Pantallas\FormDetalleJugador.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Pantallas\FormDetalleJugador.Designer.cs">
+      <DependentUpon>FormDetalleJugador.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Pantallas\Ui.cs" />
+    <Compile Include="Servicios\Calculos.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Servicios\Api.cs" />
+    <Compile Include="Servicios\Datos.cs" />
+    <EmbeddedResource Include="Pantallas\FormEditarJugador.resx">
+      <DependentUpon>FormEditarJugador.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Pantallas\FormLogin.resx">
+      <DependentUpon>FormLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Pantallas\FormPrincipal.resx">
+      <DependentUpon>FormPrincipal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="Imagenes\topo_normal.png" />
+    <None Include="Imagenes\topo_halloween.png" />
+    <None Include="Imagenes\topo_navidad.png" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

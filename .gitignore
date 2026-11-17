@@ -1,0 +1,6 @@
+# Carpetas que genera Visual Studio
+.vs/
+bin/
+obj/
+*.user
+*.suo
