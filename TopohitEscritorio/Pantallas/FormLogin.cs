@@ -64,7 +64,9 @@ namespace TopohitEscritorio
                 if (respuesta == null)
                 {
                     MostrarError(Api.UltimoError);   // "Usuario o contraseña incorrectos"
-                    if (Api.UltimoCodigo != 401)      // 401 = contraseña mal. Otro código = falla la BD
+                    // 401 = contraseña mal, 403 = usuario desactivado (CAMBIO 18/11, API nueva).
+                    // Otro código = falla la API o la BD: entonces ofrecemos el modo demo.
+                    if (Api.UltimoCodigo != 401 && Api.UltimoCodigo != 403)
                     {
                         PreguntarModoDemo();
                     }

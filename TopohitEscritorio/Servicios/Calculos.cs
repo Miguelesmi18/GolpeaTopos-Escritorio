@@ -237,6 +237,30 @@ namespace TopohitEscritorio.Servicios
             return mejor;
         }
 
+        // CAMBIO 18/11-B: nivel de Historia por el que va el niño, con la MISMA regla que la API
+        // (GET api/sesiones/progreso -> nivelActual): el primer nivel ACTIVO que todavía no ha superado (0★).
+        // Los niveles desactivados se saltan, igual que en la tablet. Devuelve 0 si ha completado Historia.
+        // En estrellasTotal deja la suma de sus mejores estrellas en los niveles activos.
+        public static int NivelActualHistoria(List<Partida> historia, out int estrellasTotal)
+        {
+            estrellasTotal = 0;
+            int nivelActual = 0;
+            foreach (NivelHistoria n in Datos.NivelesHistoria)
+            {
+                if (!n.Activo)
+                {
+                    continue;      // nivel desactivado por la educadora: no cuenta
+                }
+                int estrellas = MejoresEstrellas(historia, n.Numero);
+                estrellasTotal = estrellasTotal + estrellas;
+                if (estrellas == 0 && nivelActual == 0)
+                {
+                    nivelActual = n.Numero;
+                }
+            }
+            return nivelActual;
+        }
+
         // ---------- Pestaña Seguimiento ----------
 
         // Calcula las filas de "Niños a revisar". diasPeriodo = 0 -> todas las partidas
@@ -344,18 +368,9 @@ namespace TopohitEscritorio.Servicios
                 return;
             }
 
-            // Nivel actual = el primero que todavía no ha superado (con 1★ o más)
-            int estrellasTotal = 0;
-            int nivelActual = 0;
-            for (int nivel = 1; nivel <= 10; nivel++)
-            {
-                int estrellas = MejoresEstrellas(historia, nivel);
-                estrellasTotal = estrellasTotal + estrellas;
-                if (estrellas == 0 && nivelActual == 0)
-                {
-                    nivelActual = nivel;
-                }
-            }
+            // Nivel actual = el primer nivel activo que todavía no ha superado (con 1★ o más)
+            int estrellasTotal;
+            int nivelActual = NivelActualHistoria(historia, out estrellasTotal);   // CAMBIO 18/11-B
             if (nivelActual == 0)
             {
                 f.ModoHistoria = "Completado · " + estrellasTotal + "★";

@@ -76,17 +76,9 @@ namespace TopohitEscritorio.Pantallas
             {
                 return texto + "   ·   Historia: sin empezar";
             }
-            int estrellasTotal = 0;
-            int nivelActual = 0;
-            for (int nivel = 1; nivel <= Datos.NivelesHistoria.Count; nivel++)
-            {
-                int estrellas = Calculos.MejoresEstrellas(historia, nivel);
-                estrellasTotal = estrellasTotal + estrellas;
-                if (estrellas == 0 && nivelActual == 0)
-                {
-                    nivelActual = nivel;
-                }
-            }
+            // CAMBIO 18/11-B: misma regla que la API y la pestaña Seguimiento (se saltan los niveles desactivados)
+            int estrellasTotal;
+            int nivelActual = Calculos.NivelActualHistoria(historia, out estrellasTotal);
             if (nivelActual == 0)
             {
                 return texto + "   ·   Historia completada · " + estrellasTotal + "★";

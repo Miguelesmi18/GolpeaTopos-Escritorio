@@ -88,12 +88,13 @@ namespace TopohitEscritorio.Servicios
 
         // POST api/auth/login. Si va bien guarda el token y devuelve los datos del usuario (con su rol).
         // Si va mal devuelve null y deja el motivo en UltimoError.
-        // La contraseña se envía tal cual: la API la comprueba con el hash bcrypt de la BD.
+        // CAMBIO 18/11 (API nueva): la contraseña NO viaja. El escritorio la cifra con bcrypt
+        // ($2a$, coste 10, sal fija del proyecto) y envía el hash; la API lo compara con el de la BD.
         public static async Task<LoginRespuesta> Login(string usuario, string contrasena)
         {
             LoginPeticion peticion = new LoginPeticion();
             peticion.Username = usuario;
-            peticion.Password = contrasena;
+            peticion.PasswordHash = Cifrado.Hash(contrasena);
 
             HttpResponseMessage response = await client.PostAsJsonAsync("api/auth/login", peticion);
             if (response.StatusCode != HttpStatusCode.OK)
@@ -108,13 +109,15 @@ namespace TopohitEscritorio.Servicios
             return datos;
         }
 
-        // PUT api/auth/contrasena: el usuario que ha entrado cambia SU contraseña. true si va bien (200)
+        // PUT api/auth/password: el usuario que ha entrado cambia SU contraseña. true si va bien (200)
+        // CAMBIO 18/11: se envían los hashes bcrypt (sal fija) de la actual y de la nueva, nunca las contraseñas.
+        // Si la actual no es correcta, la API responde 400 y el mensaje queda en UltimoError.
         public static async Task<bool> CambiarContrasena(string actual, string nueva)
         {
             CambioContrasena peticion = new CambioContrasena();
-            peticion.PasswordActual = actual;
-            peticion.PasswordNueva = nueva;
-            HttpResponseMessage response = await client.PutAsJsonAsync("api/auth/contrasena", peticion);
+            peticion.PasswordHashActual = Cifrado.Hash(actual);
+            peticion.PasswordHashNueva = Cifrado.Hash(nueva);
+            HttpResponseMessage response = await client.PutAsJsonAsync("api/auth/password", peticion);
             return await ComprobarOk(response);
         }
 
@@ -127,10 +130,11 @@ namespace TopohitEscritorio.Servicios
 
         // ---------- Jugadores (usuarios) ----------
 
-        // GET api/jugadores. Devuelve null si hay error.
+        // GET api/usuarios: todos los usuarios (cualquier rol). Devuelve null si hay error.
+        // CAMBIO 18/11: en la API nueva api/jugadores solo trae a los niños; la gestión de usuarios es api/usuarios.
         public static async Task<List<JugadorApi>> GetJugadores()
         {
-            HttpResponseMessage response = await client.GetAsync("api/jugadores");
+            HttpResponseMessage response = await client.GetAsync("api/usuarios");
             if (response.StatusCode != HttpStatusCode.OK)
             {
                 await GuardarError(response);
@@ -148,14 +152,18 @@ namespace TopohitEscritorio.Servicios
             p.Tematica = u.Tematica;
             p.Observaciones = u.Observaciones;
             p.Activo = u.Activo;
-            p.Password = contrasena;                  // vacía = no cambiar la contraseña (la API la cifra)
+            // CAMBIO 18/11: la contraseña no viaja; si han escrito una, enviamos su hash bcrypt (sal fija)
+            if (!string.IsNullOrEmpty(contrasena))
+            {
+                p.PasswordHash = Cifrado.Hash(contrasena);
+            }
             return p;
         }
 
-        // POST api/jugadores (solo admin). 201 = creado, 409 = ya existe, 403 = no eres admin
+        // POST api/usuarios (solo admin). 201 = creado, 409 = ya existe, 403 = no eres admin
         public static async Task<HttpStatusCode> CrearUsuario(Usuario u, string contrasena)
         {
-            HttpResponseMessage response = await client.PostAsJsonAsync("api/jugadores", UsuarioAPeticion(u, contrasena));
+            HttpResponseMessage response = await client.PostAsJsonAsync("api/usuarios", UsuarioAPeticion(u, contrasena));
             if (response.StatusCode != HttpStatusCode.Created)
             {
                 await GuardarError(response);
@@ -163,10 +171,11 @@ namespace TopohitEscritorio.Servicios
             return response.StatusCode;
         }
 
-        // PUT api/jugadores/{id} (solo admin). 200 = modificado
+        // PUT api/usuarios/{id} (solo admin). 200 = modificado, 409 = nombre repetido
+        // Si han escrito una contraseña nueva, va su hash en el mismo PUT (vacía = no se cambia).
         public static async Task<HttpStatusCode> ModificarUsuario(Usuario u, string contrasena)
         {
-            HttpResponseMessage response = await client.PutAsJsonAsync("api/jugadores/" + u.Id, UsuarioAPeticion(u, contrasena));
+            HttpResponseMessage response = await client.PutAsJsonAsync("api/usuarios/" + u.Id, UsuarioAPeticion(u, contrasena));
             if (response.StatusCode != HttpStatusCode.OK)
             {
                 await GuardarError(response);
@@ -174,10 +183,10 @@ namespace TopohitEscritorio.Servicios
             return response.StatusCode;
         }
 
-        // DELETE api/jugadores/{id} (solo admin). 200 = eliminado, 400 = tiene partidas
+        // DELETE api/usuarios/{id} (solo admin). 200 = eliminado, 400 = tiene partidas
         public static async Task<HttpStatusCode> EliminarUsuario(int id)
         {
-            HttpResponseMessage response = await client.DeleteAsync("api/jugadores/" + id);
+            HttpResponseMessage response = await client.DeleteAsync("api/usuarios/" + id);
             if (response.StatusCode != HttpStatusCode.OK)
             {
                 await GuardarError(response);

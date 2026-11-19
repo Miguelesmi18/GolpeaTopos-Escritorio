@@ -10,10 +10,12 @@ namespace TopohitEscritorio.Modelos
     // la API usa los mismos nombres, así que reutilizamos nuestras clases.
 
     // Lo que enviamos a POST api/auth/login
+    // CAMBIO 18/11 (API nueva): ya no se envía la contraseña, sino su hash bcrypt
+    // hecho aquí en el escritorio con Cifrado.Hash (mismo $2a$, coste 10 y sal que la tablet y la BD).
     public class LoginPeticion
     {
         public string Username { get; set; }
-        public string Password { get; set; }          // la API la comprueba con el hash de la BD
+        public string PasswordHash { get; set; }
     }
 
     // Lo que devuelve la API cuando el login va bien
@@ -24,20 +26,21 @@ namespace TopohitEscritorio.Modelos
         public int IdUsuario { get; set; }
         public string Username { get; set; }
         public string Rol { get; set; }               // admin, educador o jugador
+        public string Tematica { get; set; }          // CAMBIO 18/11: la API nueva también la devuelve
     }
 
-    // Lo que enviamos a POST api/jugadores y PUT api/jugadores/{id}
+    // Lo que enviamos a POST api/usuarios y PUT api/usuarios/{id}
     public class UsuarioPeticion
     {
         public string Username { get; set; }
-        public string Password { get; set; }          // vacía en el PUT = no cambiar la contraseña
+        public string PasswordHash { get; set; }      // CAMBIO 18/11: hash bcrypt hecho en el escritorio (null = no cambiar)
         public string Rol { get; set; }
         public string Tematica { get; set; }
         public string Observaciones { get; set; }
         public bool Activo { get; set; }
     }
 
-    // Un elemento de GET api/jugadores
+    // Un elemento de GET api/usuarios
     public class JugadorApi
     {
         public int IdUsuario { get; set; }
@@ -53,9 +56,9 @@ namespace TopohitEscritorio.Modelos
     public class SesionApi
     {
         public int SessionId { get; set; }
-        public int IdUsuario { get; set; }
+        public int UserId { get; set; }               // CAMBIO 18/11: la API nueva lo llama UserId
         public string Username { get; set; }
-        public int ModoId { get; set; }
+        public int ModeId { get; set; }               // CAMBIO 18/11: la API nueva lo llama ModeId
         public string Modo { get; set; }
         public DateTime DateTime { get; set; }
         public int SessionLength { get; set; }
@@ -73,11 +76,12 @@ namespace TopohitEscritorio.Modelos
         public int? AvgReactionMs { get; set; }       // tiempo de reacción medio (puede faltar)
     }
 
-    // Lo que enviamos a PUT api/auth/contrasena
+    // CAMBIO 18/11: lo que enviamos a PUT api/auth/password (cambiar la contraseña propia).
+    // Van los hashes bcrypt (sal fija), nunca las contraseñas.
     public class CambioContrasena
     {
-        public string PasswordActual { get; set; }
-        public string PasswordNueva { get; set; }
+        public string PasswordHashActual { get; set; }
+        public string PasswordHashNueva { get; set; }
     }
 
     // GET y PUT api/modos/criterios: cuándo avisa la pestaña Seguimiento
