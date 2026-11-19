@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;         // colores, fuentes, tamaños
+using System.IO;              // CAMBIO 19/11: Path y File, para leer los PNG de los avatares
 using System.Windows.Forms;   // botones, etiquetas, tablas...
+using TopohitEscritorio.Modelos;
 
 namespace TopohitEscritorio.Pantallas
 {
@@ -28,7 +30,45 @@ namespace TopohitEscritorio.Pantallas
         public static Image TopoHalloween = Properties.Resources.topo_halloween;
         public static Image TopoNavidad = Properties.Resources.topo_navidad;
 
-        // El avatar del niño según su temática
+        // CAMBIO 19/11: el avatar de cada usuario sale de la tabla AVATAR (USUARIO.avatar_id).
+        // Los 12 PNG están en Imagenes\Avatares\ y se copian junto al .exe al compilar
+        // (en el .csproj: "Copiar en el directorio de resultados"). El nombre del archivo es el "recurso" de la tabla.
+        // Cada imagen se lee una sola vez: se guarda en estas dos listas (misma posición = mismo avatar)
+        // para no leer el archivo cada vez que se pinta la tabla.
+        private static List<int> idsCargados = new List<int>();
+        private static List<Image> imagenesCargadas = new List<Image>();
+
+        public static Image Avatar(int avatarId)
+        {
+            // 1. ¿Ya la hemos leído antes?
+            for (int i = 0; i < idsCargados.Count; i++)
+            {
+                if (idsCargados[i] == avatarId)
+                {
+                    return imagenesCargadas[i];
+                }
+            }
+
+            // 2. Buscamos su archivo en la lista de avatares
+            foreach (AvatarApi a in Datos.Avatares)
+            {
+                if (a.Id == avatarId)
+                {
+                    Image imagen = TopoNormal;              // si falta el PNG, el topo normal
+                    string ruta = Path.Combine(Application.StartupPath, "Imagenes", "Avatares", a.Recurso + ".png");
+                    if (File.Exists(ruta))
+                    {
+                        imagen = Image.FromFile(ruta);
+                    }
+                    idsCargados.Add(avatarId);
+                    imagenesCargadas.Add(imagen);
+                    return imagen;
+                }
+            }
+            return TopoNormal;                              // id desconocido
+        }
+
+        // El topo de cada temática (antes era el avatar del niño; ya no se usa para el avatar)
         public static Image Avatar(string tematica)
         {
             if (tematica == "Halloween")

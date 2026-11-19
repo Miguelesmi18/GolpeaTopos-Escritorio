@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Net;
 using System.Net.Http;
 using System.Windows.Forms;
@@ -17,6 +18,10 @@ namespace TopohitEscritorio
 
         // Si vale null, estamos creando un usuario NUEVO.
         private Usuario usuarioEditado;
+
+        // CAMBIO 19/11: el avatar marcado en la fila de imágenes (id de la tabla AVATAR)
+        private int avatarElegido = 1;
+        private Color colorElegido = Color.FromArgb(255, 210, 140);
 
         public FormEditarJugador(Usuario usuario)
         {
@@ -46,6 +51,56 @@ namespace TopohitEscritorio
                 cmbRol.SelectedItem = usuarioEditado.Rol;
                 chkActivo.Checked = usuarioEditado.Activo;
                 txtContrasena.Visible = false;     // aparece al pulsar "Restablecer contraseña"
+                avatarElegido = usuarioEditado.AvatarId;
+            }
+
+            CrearAvatares();
+        }
+
+        // CAMBIO 19/11: una imagen por avatar (los 12 de la tabla AVATAR, en el orden de la tablet).
+        // Se crean desde el código porque la lista viene de la API. Al hacer clic se marca la elegida.
+        private void CrearAvatares()
+        {
+            flpAvatares.Controls.Clear();
+            foreach (AvatarApi a in Datos.Avatares)
+            {
+                PictureBox pic = new PictureBox();
+                pic.Image = Ui.Avatar(a.Id);
+                pic.SizeMode = PictureBoxSizeMode.Zoom;
+                pic.Size = new Size(50, 58);
+                pic.Margin = new Padding(2);
+                pic.Padding = new Padding(2);
+                pic.Cursor = Cursors.Hand;
+                pic.Tag = a.Id;                    // así sabemos qué avatar es al hacer clic
+                pic.Click += picAvatar_Click;
+                flpAvatares.Controls.Add(pic);
+            }
+            MarcarAvatar();
+        }
+
+        private void picAvatar_Click(object sender, EventArgs e)
+        {
+            PictureBox pic = (PictureBox)sender;
+            avatarElegido = (int)pic.Tag;
+            MarcarAvatar();
+        }
+
+        // El avatar elegido con fondo naranja claro y borde; los demás, sin nada
+        private void MarcarAvatar()
+        {
+            foreach (Control c in flpAvatares.Controls)
+            {
+                PictureBox pic = (PictureBox)c;
+                if ((int)pic.Tag == avatarElegido)
+                {
+                    pic.BackColor = colorElegido;
+                    pic.BorderStyle = BorderStyle.FixedSingle;
+                }
+                else
+                {
+                    pic.BackColor = Color.Transparent;
+                    pic.BorderStyle = BorderStyle.None;
+                }
             }
         }
 
@@ -103,6 +158,7 @@ namespace TopohitEscritorio
             datos.NombreUsuario = nombre;
             datos.Rol = cmbRol.SelectedItem.ToString();
             datos.Activo = chkActivo.Checked;
+            datos.AvatarId = avatarElegido;             // CAMBIO 19/11
 
             // 3. Modo demo: solo en memoria
             if (Datos.ModoDemo)
@@ -174,6 +230,7 @@ namespace TopohitEscritorio
             usuarioEditado.NombreUsuario = datos.NombreUsuario;
             usuarioEditado.Rol = datos.Rol;
             usuarioEditado.Tematica = datos.Tematica;
+            usuarioEditado.AvatarId = datos.AvatarId;
             usuarioEditado.Observaciones = datos.Observaciones;
             usuarioEditado.Activo = datos.Activo;
         }

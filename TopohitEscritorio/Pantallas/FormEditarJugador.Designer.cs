@@ -34,6 +34,8 @@
             this.btnRestablecer = new System.Windows.Forms.Button();
             this.txtContrasena = new System.Windows.Forms.TextBox();
             this.lblContrasenaAyuda = new System.Windows.Forms.Label();
+            this.lblAvatar = new System.Windows.Forms.Label();
+            this.flpAvatares = new System.Windows.Forms.FlowLayoutPanel();
             this.chkActivo = new System.Windows.Forms.CheckBox();
             this.btnEliminar = new System.Windows.Forms.Button();
             this.btnCancelar = new System.Windows.Forms.Button();
@@ -162,12 +164,31 @@
             this.lblContrasenaAyuda.Size = new System.Drawing.Size(420, 40);
             this.lblContrasenaAyuda.Text = "El admin pone una contraseña temporal (no hay email); se guarda cifrada (hash) en SQL Server, nunca en claro.";
             // 
+            // lblAvatar
+            // 
+            this.lblAvatar.AutoSize = true;
+            this.lblAvatar.BackColor = System.Drawing.Color.Transparent;
+            this.lblAvatar.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            this.lblAvatar.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(35)))), ((int)(((byte)(20)))));
+            this.lblAvatar.Location = new System.Drawing.Point(34, 258);
+            this.lblAvatar.Name = "lblAvatar";
+            this.lblAvatar.Text = "Avatar";
+            // 
+            // flpAvatares (CAMBIO 19/11: las 12 imágenes se añaden desde el código, en FormEditarJugador_Load)
+            // 
+            this.flpAvatares.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(244)))), ((int)(((byte)(220)))));
+            this.flpAvatares.Location = new System.Drawing.Point(34, 282);
+            this.flpAvatares.Name = "flpAvatares";
+            this.flpAvatares.Padding = new System.Windows.Forms.Padding(2);
+            this.flpAvatares.Size = new System.Drawing.Size(674, 66);
+            this.flpAvatares.WrapContents = false;
+            // 
             // chkActivo
             // 
             this.chkActivo.AutoSize = true;
             this.chkActivo.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.chkActivo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(35)))), ((int)(((byte)(20)))));
-            this.chkActivo.Location = new System.Drawing.Point(34, 258);
+            this.chkActivo.Location = new System.Drawing.Point(34, 362);
             this.chkActivo.Name = "chkActivo";
             this.chkActivo.Text = "Activo  (desmárcalo para dar de baja sin borrar sus partidas)";
             // 
@@ -180,7 +201,7 @@
             this.btnEliminar.FlatAppearance.BorderSize = 2;
             this.btnEliminar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnEliminar.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(35)))), ((int)(((byte)(20)))));
-            this.btnEliminar.Location = new System.Drawing.Point(34, 302);
+            this.btnEliminar.Location = new System.Drawing.Point(34, 400);
             this.btnEliminar.Name = "btnEliminar";
             this.btnEliminar.Size = new System.Drawing.Size(171, 44);
             this.btnEliminar.Text = "Eliminar jugador";
@@ -196,7 +217,7 @@
             this.btnCancelar.FlatAppearance.BorderSize = 2;
             this.btnCancelar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnCancelar.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(35)))), ((int)(((byte)(20)))));
-            this.btnCancelar.Location = new System.Drawing.Point(452, 302);
+            this.btnCancelar.Location = new System.Drawing.Point(452, 400);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(114, 44);
             this.btnCancelar.Text = "Cancelar";
@@ -212,7 +233,7 @@
             this.btnGuardar.FlatAppearance.BorderSize = 2;
             this.btnGuardar.Font = new System.Drawing.Font("Segoe UI", 10.5F, System.Drawing.FontStyle.Bold);
             this.btnGuardar.ForeColor = System.Drawing.Color.White;
-            this.btnGuardar.Location = new System.Drawing.Point(580, 302);
+            this.btnGuardar.Location = new System.Drawing.Point(580, 400);
             this.btnGuardar.Name = "btnGuardar";
             this.btnGuardar.Size = new System.Drawing.Size(128, 44);
             this.btnGuardar.Text = "Guardar";
@@ -232,6 +253,8 @@
             this.pnlFondo.Controls.Add(this.btnRestablecer);
             this.pnlFondo.Controls.Add(this.txtContrasena);
             this.pnlFondo.Controls.Add(this.lblContrasenaAyuda);
+            this.pnlFondo.Controls.Add(this.lblAvatar);
+            this.pnlFondo.Controls.Add(this.flpAvatares);
             this.pnlFondo.Controls.Add(this.chkActivo);
             this.pnlFondo.Controls.Add(this.btnEliminar);
             this.pnlFondo.Controls.Add(this.btnCancelar);
@@ -239,14 +262,14 @@
             this.pnlFondo.BackColor = System.Drawing.Color.White;
             this.pnlFondo.Location = new System.Drawing.Point(3, 3);
             this.pnlFondo.Name = "pnlFondo";
-            this.pnlFondo.Size = new System.Drawing.Size(734, 384);
+            this.pnlFondo.Size = new System.Drawing.Size(734, 482);
             // 
             // FormEditarJugador
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(35)))), ((int)(((byte)(20)))));
-            this.ClientSize = new System.Drawing.Size(740, 390);
+            this.ClientSize = new System.Drawing.Size(740, 488);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FormEditarJugador";
             this.ShowInTaskbar = false;
@@ -274,6 +297,8 @@
         private System.Windows.Forms.Button btnRestablecer;
         private System.Windows.Forms.TextBox txtContrasena;
         private System.Windows.Forms.Label lblContrasenaAyuda;
+        private System.Windows.Forms.Label lblAvatar;
+        private System.Windows.Forms.FlowLayoutPanel flpAvatares;
         private System.Windows.Forms.CheckBox chkActivo;
         private System.Windows.Forms.Button btnEliminar;
         private System.Windows.Forms.Button btnCancelar;

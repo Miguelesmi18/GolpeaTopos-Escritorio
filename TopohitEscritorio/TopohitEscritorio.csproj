@@ -149,6 +149,46 @@
     <None Include="Imagenes\topo_halloween.png" />
     <None Include="Imagenes\topo_navidad.png" />
   </ItemGroup>
+  <!-- CAMBIO 19/11: los 12 avatares (tabla AVATAR). Son copia de Android/app/src/main/res/drawable-nodpi
+       y se copian junto al .exe (bin\Debug\Imagenes\Avatares) para que Ui.Avatar los encuentre. -->
+  <ItemGroup>
+    <Content Include="Imagenes\Avatares\topo_normal_03_feliz.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Imagenes\Avatares\topo_normal_05_enfadado.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Imagenes\Avatares\topo_normal_08_dorado.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Imagenes\Avatares\topo_normal_07_burlon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Imagenes\Avatares\topo_halloween_01_feliz_bruja.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Imagenes\Avatares\topo_halloween_03_enfadado_vampiro.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Imagenes\Avatares\topo_halloween_06_dorado_bruja.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Imagenes\Avatares\topo_halloween_05_burlon_fantasma.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Imagenes\Avatares\topo_navidad_01_feliz_papanoel.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Imagenes\Avatares\topo_navidad_03_enfadado_reno.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Imagenes\Avatares\topo_navidad_06_dorado_navidad.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Imagenes\Avatares\topo_navidad_05_burlon_bufanda.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

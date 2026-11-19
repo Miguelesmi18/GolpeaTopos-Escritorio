@@ -27,6 +27,7 @@ namespace TopohitEscritorio.Modelos
         public string Username { get; set; }
         public string Rol { get; set; }               // admin, educador o jugador
         public string Tematica { get; set; }          // CAMBIO 18/11: la API nueva también la devuelve
+        public int AvatarId { get; set; }             // CAMBIO 19/11
     }
 
     // Lo que enviamos a POST api/usuarios y PUT api/usuarios/{id}
@@ -36,6 +37,7 @@ namespace TopohitEscritorio.Modelos
         public string PasswordHash { get; set; }      // CAMBIO 18/11: hash bcrypt hecho en el escritorio (null = no cambiar)
         public string Rol { get; set; }
         public string Tematica { get; set; }
+        public int? AvatarId { get; set; }            // CAMBIO 19/11: id de la tabla AVATAR
         public string Observaciones { get; set; }
         public bool Activo { get; set; }
     }
@@ -47,9 +49,28 @@ namespace TopohitEscritorio.Modelos
         public string Username { get; set; }
         public string Rol { get; set; }
         public string Tematica { get; set; }
+        public int AvatarId { get; set; }             // CAMBIO 19/11: id de la tabla AVATAR (1 a 12)
         public string Observaciones { get; set; }
         public bool Activo { get; set; }
         public DateTime FechaRegistro { get; set; }
+    }
+
+    // CAMBIO 19/11: un elemento de GET api/modos/avatares (tabla AVATAR). No depende de la temática
+    // Recurso = nombre del PNG (el mismo que el drawable de Android), que está en Imagenes\Avatares\
+    public class AvatarApi
+    {
+        public int Id { get; set; }
+        public string Recurso { get; set; }
+
+        public AvatarApi()
+        {
+        }
+
+        public AvatarApi(int id, string recurso)
+        {
+            this.Id = id;
+            this.Recurso = recurso;
+        }
     }
 
     // Un elemento de GET api/sesiones/todas

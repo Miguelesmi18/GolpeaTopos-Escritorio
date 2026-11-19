@@ -96,7 +96,7 @@ namespace TopohitEscritorio.Pantallas
         }
 
         // La tabla llama a este evento cada vez que va a pintar una celda.
-        // Aquí ponemos el avatar (según la temática) y los dados de baja en gris y tachados.
+        // Aquí ponemos el avatar (el que tiene guardado, CAMBIO 19/11) y los dados de baja en gris y tachados.
         // Antes se ponía con un for justo después del DataSource, pero la primera vez la tabla
         // aún no se ve: al mostrarse vuelve a crear sus filas y la imagen se perdía (salía en blanco).
         private void dgvJugadores_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
@@ -108,7 +108,7 @@ namespace TopohitEscritorio.Pantallas
             Usuario u = (Usuario)dgvJugadores.Rows[e.RowIndex].DataBoundItem;
             if (e.ColumnIndex == colAvatar.Index)
             {
-                e.Value = Ui.Avatar(u.Tematica);
+                e.Value = Ui.Avatar(u.AvatarId);          // CAMBIO 19/11: su avatar, no el de la temática
             }
             if (!u.Activo)
             {

@@ -42,6 +42,11 @@ namespace TopohitEscritorio.Servicios
         public const int ESTRELLA_2 = 70;
         public const int ESTRELLA_3 = 100;
 
+        // CAMBIO 19/11: puntos mínimos de una partida en la que se ha vencido al jefe (nivel 10).
+        // 10 golpes * 10 + 100 al vencerlo = 200; sin vencerlo no se pasa de 140. Igual que la API
+        // (ReglasProgreso.PUNTOS_JEFE_VENCIDO) y la tablet (que da 3 estrellas solo con VICTORIA).
+        public const int PUNTOS_JEFE_VENCIDO = 200;
+
         // Criterios de aviso (pestaña Seguimiento). Ya no son const: el admin los cambia desde
         // el escritorio y se guardan en la tabla CRITERIOS_AVISO. Estos son los valores por defecto,
         // que se usan en el modo demo; al hacer login Datos.CargarDesdeApi() pone los de la base de datos.
@@ -201,7 +206,12 @@ namespace TopohitEscritorio.Servicios
             }
             if (nivel.Objetivo == 0)
             {
-                return 3;      // nivel jefe: si no lo abandona, lo ha superado
+                // CAMBIO 19/11: nivel jefe. Antes daba 3 estrellas solo por no abandonar, aunque se acabara el tiempo
+                if (p.Puntos >= PUNTOS_JEFE_VENCIDO)
+                {
+                    return 3;
+                }
+                return 0;
             }
             int porcentaje = p.Puntos * 100 / nivel.Objetivo;
             if (porcentaje >= ESTRELLA_3)

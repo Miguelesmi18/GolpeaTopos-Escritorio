@@ -150,6 +150,7 @@ namespace TopohitEscritorio.Servicios
             p.Username = u.NombreUsuario;
             p.Rol = u.Rol;
             p.Tematica = u.Tematica;
+            p.AvatarId = u.AvatarId;                  // CAMBIO 19/11
             p.Observaciones = u.Observaciones;
             p.Activo = u.Activo;
             // CAMBIO 18/11: la contraseña no viaja; si han escrito una, enviamos su hash bcrypt (sal fija)
@@ -241,6 +242,18 @@ namespace TopohitEscritorio.Servicios
                 return null;
             }
             return await response.Content.ReadFromJsonAsync<List<DificultadInfinito>>();
+        }
+
+        // CAMBIO 19/11: GET api/modos/avatares, los 12 avatares (tabla AVATAR). null si hay error.
+        public static async Task<List<AvatarApi>> GetAvatares()
+        {
+            HttpResponseMessage response = await client.GetAsync("api/modos/avatares");
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                await GuardarError(response);
+                return null;
+            }
+            return await response.Content.ReadFromJsonAsync<List<AvatarApi>>();
         }
 
         // PUT api/modos/historia/{numero}: activar o desactivar un nivel. true si se ha guardado (200)

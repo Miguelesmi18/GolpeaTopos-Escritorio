@@ -14,6 +14,7 @@ namespace TopohitEscritorio.Modelos
         public string Contrasena { get; set; }
         public string Rol { get; set; }              // jugador, educador o admin
         public string Tematica { get; set; }         // Normal, Halloween o Navidad
+        public int AvatarId { get; set; } = 1;       // CAMBIO 19/11: imagen de perfil (tabla AVATAR). 1 = topo normal feliz
         public string Observaciones { get; set; }
         public bool Activo { get; set; }
         public DateTime FechaRegistro { get; set; }

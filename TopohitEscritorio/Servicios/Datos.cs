@@ -16,6 +16,7 @@ namespace TopohitEscritorio.Modelos
         public static List<NivelHistoria> NivelesHistoria = new List<NivelHistoria>();
         public static List<DificultadContrarreloj> Contrarreloj = new List<DificultadContrarreloj>();
         public static List<DificultadInfinito> Infinito = new List<DificultadInfinito>();
+        public static List<AvatarApi> Avatares = new List<AvatarApi>();   // CAMBIO 19/11: los 12 avatares
         public static Usuario UsuarioActual = null;   // el educador o admin que ha iniciado sesión
         public static bool ModoDemo = false;           // true = datos de ejemplo, no se guarda nada en la API
 
@@ -32,6 +33,26 @@ namespace TopohitEscritorio.Modelos
             NivelesHistoria.Clear();
             Contrarreloj.Clear();
             Infinito.Clear();
+            Avatares.Clear();
+        }
+
+        // CAMBIO 19/11: los mismos 12 avatares que la tabla AVATAR (06_avatares.sql), en el mismo orden.
+        // Se usan en el modo demo y si la API todavía no tiene api/modos/avatares.
+        private static void AvataresPorDefecto()
+        {
+            Avatares.Clear();
+            Avatares.Add(new AvatarApi(1, "topo_normal_03_feliz"));
+            Avatares.Add(new AvatarApi(2, "topo_normal_05_enfadado"));
+            Avatares.Add(new AvatarApi(3, "topo_normal_08_dorado"));
+            Avatares.Add(new AvatarApi(4, "topo_normal_07_burlon"));
+            Avatares.Add(new AvatarApi(5, "topo_halloween_01_feliz_bruja"));
+            Avatares.Add(new AvatarApi(6, "topo_halloween_03_enfadado_vampiro"));
+            Avatares.Add(new AvatarApi(7, "topo_halloween_06_dorado_bruja"));
+            Avatares.Add(new AvatarApi(8, "topo_halloween_05_burlon_fantasma"));
+            Avatares.Add(new AvatarApi(9, "topo_navidad_01_feliz_papanoel"));
+            Avatares.Add(new AvatarApi(10, "topo_navidad_03_enfadado_reno"));
+            Avatares.Add(new AvatarApi(11, "topo_navidad_06_dorado_navidad"));
+            Avatares.Add(new AvatarApi(12, "topo_navidad_05_burlon_bufanda"));
         }
 
         // ---------- Datos REALES de la API ----------
@@ -73,6 +94,9 @@ namespace TopohitEscritorio.Modelos
             // no paramos: se usan los valores por defecto de Calculos.
             CriteriosAviso criterios = await Api.GetCriterios();
 
+            // CAMBIO 19/11: si falla (API o BD sin la tabla AVATAR), no paramos: se usan los 12 de siempre
+            List<AvatarApi> avatares = await Api.GetAvatares();
+
 
             // 2. Lo pasamos a nuestras listas
             VaciarListas();
@@ -84,6 +108,11 @@ namespace TopohitEscritorio.Modelos
                 u.NombreUsuario = j.Username;
                 u.Rol = j.Rol;
                 u.Tematica = j.Tematica;
+                u.AvatarId = j.AvatarId;
+                if (u.AvatarId == 0)
+                {
+                    u.AvatarId = 1;     // la API todavía no lo envía (falta 06_avatares.sql)
+                }
                 u.Observaciones = j.Observaciones;
                 u.Activo = j.Activo;
                 u.FechaRegistro = j.FechaRegistro;
@@ -98,6 +127,15 @@ namespace TopohitEscritorio.Modelos
             NivelesHistoria.AddRange(niveles);
             Contrarreloj.AddRange(contrarreloj);
             Infinito.AddRange(infinito);
+
+            if (avatares != null && avatares.Count > 0)
+            {
+                Avatares.AddRange(avatares);
+            }
+            else
+            {
+                AvataresPorDefecto();
+            }
 
             if (criterios != null)
             {
@@ -195,6 +233,14 @@ namespace TopohitEscritorio.Modelos
             Usuarios.Add(new Usuario(8, "sara_c", "1234", "jugador", "Halloween"));
             Usuarios.Add(new Usuario(9, "mateo_f", "1234", "jugador", "Navidad"));
             Usuarios.Add(new Usuario(10, "aitana_l", "1234", "jugador", "Normal"));
+
+            // CAMBIO 19/11: avatares (ids de la tabla AVATAR)
+            AvataresPorDefecto();
+            int[] avataresDemo = { 1, 3, 2, 6, 9, 4, 1, 8, 10, 7 };
+            for (int i = 0; i < Usuarios.Count; i++)
+            {
+                Usuarios[i].AvatarId = avataresDemo[i];
+            }
 
             // Partidas: id, usuario, fecha, modo, nivel, duración, puntos, aciertos, errores, escapados, reacción, abandonada
             Partidas.Add(new Partida("a3f9", "hugo_p", new DateTime(2026, 11, 4, 10, 31, 0), "historia", "4", 45, 210, 14, 9, 6, 880, true));

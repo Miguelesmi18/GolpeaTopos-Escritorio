@@ -28,7 +28,7 @@ namespace TopohitEscritorio.Pantallas
         {
             Ui.EstiloTabla(dgvHistorial);
             lblVolver.Text = "← " + vieneDe;
-            picAvatar.Image = Ui.Avatar(jugador.Tematica);
+            picAvatar.Image = Ui.Avatar(jugador.AvatarId);     // CAMBIO 19/11
             lblNombre.Text = jugador.NombreUsuario;
             lblRegistrado.Text = "Registrado el " + jugador.FechaRegistro.ToString("dd/MM/yyyy");
             if (!jugador.Activo)
