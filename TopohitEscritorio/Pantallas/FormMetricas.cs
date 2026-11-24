@@ -68,8 +68,8 @@ namespace TopohitEscritorio.Pantallas
             }
             while (flpGraficas.Controls.Count > 0)
             {
-                // Cada caja tiene el título (0) y la imagen (1): la imagen se libera aparte
-                PictureBox imagen = (PictureBox)flpGraficas.Controls[0].Controls[1];
+                // Cada caja solo tiene la imagen: se libera aparte
+                PictureBox imagen = (PictureBox)flpGraficas.Controls[0].Controls[0];
                 if (imagen.Image != null)
                 {
                     imagen.Image.Dispose();
@@ -109,7 +109,8 @@ namespace TopohitEscritorio.Pantallas
             }
         }
 
-        // Dos gráficas por fila. Al hacer clic se abre en grande (el árbol no se lee en pequeño)
+        // Dos gráficas por fila (cada una ya lleva su título dentro de la imagen, como en el PDF).
+        // Al hacer clic se abre en grande (el árbol no se lee en pequeño)
         private void PintarGraficas(ResultadoMetricas resultado)
         {
             foreach (GraficaMetrica g in resultado.Graficas)
@@ -120,23 +121,15 @@ namespace TopohitEscritorio.Pantallas
                 caja.BackColor = Color.White;
                 caja.BorderStyle = BorderStyle.FixedSingle;
 
-                Label titulo = new Label();
-                titulo.Text = g.Titulo;
-                titulo.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
-                titulo.ForeColor = Ui.Marron;
-                titulo.Location = new Point(10, 8);
-                titulo.Size = new Size(518, 22);
-
                 PictureBox imagen = new PictureBox();
                 imagen.Image = CargarImagen(Path.Combine(Metricas.Carpeta, g.Archivo));
                 imagen.SizeMode = PictureBoxSizeMode.Zoom;
-                imagen.Location = new Point(10, 34);
-                imagen.Size = new Size(518, 336);
+                imagen.Location = new Point(10, 10);
+                imagen.Size = new Size(518, 358);
                 imagen.Cursor = Cursors.Hand;
                 imagen.Tag = g.Titulo;
                 imagen.Click += new EventHandler(imagen_Click);
 
-                caja.Controls.Add(titulo);
                 caja.Controls.Add(imagen);
                 flpGraficas.Controls.Add(caja);
             }
