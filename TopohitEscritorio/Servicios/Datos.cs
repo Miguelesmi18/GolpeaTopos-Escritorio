@@ -119,9 +119,14 @@ namespace TopohitEscritorio.Modelos
                 Usuarios.Add(u);
             }
 
+            // CAMBIO 24/11: el juego solo tiene el modo Infinito. Las partidas antiguas de Historia y
+            // Contrarreloj siguen en la base de datos, pero el escritorio ya no las enseña.
             foreach (SesionApi s in sesiones)
             {
-                Partidas.Add(SesionAPartida(s));
+                if (s.Modo == "Infinito")
+                {
+                    Partidas.Add(SesionAPartida(s));
+                }
             }
 
             NivelesHistoria.AddRange(niveles);
@@ -243,16 +248,16 @@ namespace TopohitEscritorio.Modelos
             }
 
             // Partidas: id, usuario, fecha, modo, nivel, duración, puntos, aciertos, errores, escapados, reacción, abandonada
-            Partidas.Add(new Partida("a3f9", "hugo_p", new DateTime(2026, 11, 4, 10, 31, 0), "historia", "4", 45, 210, 14, 9, 6, 880, true));
-            Partidas.Add(new Partida("a3f8", "martina_r", new DateTime(2026, 11, 4, 10, 28, 0), "contrarreloj", "medio", 60, 520, 48, 3, 2, 450, false));
-            Partidas.Add(new Partida("a3f7", "lucia_g", new DateTime(2026, 11, 4, 10, 15, 0), "historia", "5", 45, 330, 31, 12, 7, 610, false));
-            Partidas.Add(new Partida("a3f6", "pablo_m", new DateTime(2026, 11, 4, 9, 58, 0), "infinito", "normal", 138, 910, 86, 5, 3, 480, false));
-            Partidas.Add(new Partida("a3f5", "leo_s", new DateTime(2026, 11, 3, 18, 2, 0), "historia", "2", 20, 70, 7, 4, 2, 720, true));
-            Partidas.Add(new Partida("a3f4", "sara_c", new DateTime(2026, 11, 3, 17, 40, 0), "contrarreloj", "fácil", 60, 310, 31, 2, 1, 530, false));
-            Partidas.Add(new Partida("a3f3", "mateo_f", new DateTime(2026, 11, 3, 17, 21, 0), "historia", "6", 45, 470, 44, 8, 5, 560, false));
-            Partidas.Add(new Partida("a3f2", "hugo_p", new DateTime(2026, 11, 3, 17, 12, 0), "contrarreloj", "fácil", 60, 260, 26, 7, 4, 820, false));
-            Partidas.Add(new Partida("a3f1", "aitana_l", new DateTime(2026, 11, 3, 16, 50, 0), "infinito", "fácil", 52, 190, 19, 6, 5, 650, false));
-            Partidas.Add(new Partida("a3f0", "lucia_g", new DateTime(2026, 11, 3, 16, 31, 0), "historia", "4", 33, 150, 15, 10, 6, 700, true));
+            Partidas.Add(new Partida("a3f9", "hugo_p", new DateTime(2026, 11, 4, 10, 31, 0), "infinito", "Fácil", 45, 210, 14, 3, 6, 880, true));
+            Partidas.Add(new Partida("a3f8", "martina_r", new DateTime(2026, 11, 4, 10, 28, 0), "infinito", "Normal", 96, 1180, 98, 3, 8, 450, false));
+            Partidas.Add(new Partida("a3f7", "lucia_g", new DateTime(2026, 11, 4, 10, 15, 0), "infinito", "Fácil", 88, 620, 55, 5, 12, 610, false));
+            Partidas.Add(new Partida("a3f6", "pablo_m", new DateTime(2026, 11, 4, 9, 58, 0), "infinito", "Normal", 138, 910, 86, 3, 9, 480, false));
+            Partidas.Add(new Partida("a3f5", "leo_s", new DateTime(2026, 11, 3, 18, 2, 0), "infinito", "Fácil", 20, 70, 7, 2, 2, 720, true));
+            Partidas.Add(new Partida("a3f4", "sara_c", new DateTime(2026, 11, 3, 17, 40, 0), "infinito", "Difícil", 130, 1520, 112, 3, 7, 530, false));
+            Partidas.Add(new Partida("a3f3", "mateo_f", new DateTime(2026, 11, 3, 17, 21, 0), "infinito", "Normal", 101, 870, 74, 3, 10, 560, false));
+            Partidas.Add(new Partida("a3f2", "hugo_p", new DateTime(2026, 11, 3, 17, 12, 0), "infinito", "Fácil", 60, 260, 26, 5, 14, 820, false));
+            Partidas.Add(new Partida("a3f1", "aitana_l", new DateTime(2026, 11, 3, 16, 50, 0), "infinito", "Fácil", 52, 190, 19, 5, 15, 650, false));
+            Partidas.Add(new Partida("a3f0", "lucia_g", new DateTime(2026, 11, 3, 16, 31, 0), "infinito", "Fácil", 33, 150, 15, 2, 6, 700, true));
 
             // Niveles de Historia: número, zona, agujeros, objetivo, tiempo, novedad
             NivelesHistoria.Add(new NivelHistoria(1, "Campo", 3, 150, 45, "Solo topos normales"));

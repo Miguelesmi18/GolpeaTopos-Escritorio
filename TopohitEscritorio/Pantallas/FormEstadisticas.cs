@@ -8,8 +8,9 @@ using TopohitEscritorio.Servicios;
 namespace TopohitEscritorio.Pantallas
 {
     // Pantalla "Estadísticas" con dos pestañas:
-    //  - General: aciertos/errores y reacción por nivel o dificultad, y resumen por modo
-    //  - Seguimiento: niños a revisar (avisos), progreso del grupo en Historia y criterios
+    //  - General: aciertos/errores y reacción por dificultad, y resumen por dificultad
+    //  - Seguimiento: niños a revisar (avisos), progreso del grupo y criterios
+    // CAMBIO 24/11: solo el modo Infinito (antes había un desplegable con Historia y Contrarreloj).
     public partial class FormEstadisticas : Form
     {
         private FormPrincipal principal;
@@ -28,11 +29,6 @@ namespace TopohitEscritorio.Pantallas
         {
             Ui.EstiloTabla(dgvResumen);
             Ui.EstiloTabla(dgvRevisar);
-
-            cmbModo.Items.Add("Modo: Historia");
-            cmbModo.Items.Add("Modo: Contrarreloj");
-            cmbModo.Items.Add("Modo: Infinito");
-            cmbModo.SelectedIndex = 0;
 
             cmbPeriodo.Items.Add("Período: últimos 7 días");
             cmbPeriodo.Items.Add("Período: últimos 30 días");
@@ -84,72 +80,18 @@ namespace TopohitEscritorio.Pantallas
 
         // ================= PESTAÑA GENERAL =================
 
-        // "historia", "contrarreloj" o "infinito" según el combo
-        private string ModoElegido()
-        {
-            if (cmbModo.SelectedIndex == 1)
-            {
-                return "contrarreloj";
-            }
-            if (cmbModo.SelectedIndex == 2)
-            {
-                return "infinito";
-            }
-            return "historia";
-        }
-
-        // El combo de dificultad depende del modo (Historia no tiene dificultades)
+        // El combo de dificultad: todas o una concreta (los nombres vienen de la API)
         private void RellenarDificultades()
         {
             cargando = true;
             cmbDificultad.Items.Clear();
-            string modo = ModoElegido();
-            if (modo == "historia")
+            cmbDificultad.Items.Add("Dificultad: todas");
+            foreach (string nombre in Calculos.NombresDificultades())
             {
-                cmbDificultad.Items.Add("Dificultad: —");
-                cmbDificultad.Enabled = false;
-            }
-            else
-            {
-                cmbDificultad.Items.Add("Dificultad: todas");
-                foreach (string nombre in NombresDificultades(modo))
-                {
-                    cmbDificultad.Items.Add("Dificultad: " + nombre);
-                }
-                cmbDificultad.Enabled = true;
+                cmbDificultad.Items.Add("Dificultad: " + nombre);
             }
             cmbDificultad.SelectedIndex = 0;
             cargando = false;
-        }
-
-        private List<string> NombresDificultades(string modo)
-        {
-            List<string> nombres = new List<string>();
-            if (modo == "contrarreloj")
-            {
-                foreach (DificultadContrarreloj d in Datos.Contrarreloj)
-                {
-                    nombres.Add(d.Nombre);
-                }
-            }
-            else
-            {
-                foreach (DificultadInfinito d in Datos.Infinito)
-                {
-                    nombres.Add(d.Nombre);
-                }
-            }
-            return nombres;
-        }
-
-        private void cmbModo_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (cargando)
-            {
-                return;
-            }
-            RellenarDificultades();
-            CargarGeneral();
         }
 
         private void cmbDificultad_SelectedIndexChanged(object sender, EventArgs e)
@@ -161,14 +103,14 @@ namespace TopohitEscritorio.Pantallas
             CargarGeneral();
         }
 
-        // Partidas de un modo y, si la hay, de una dificultad concreta ("" = todas).
+        // Partidas de una dificultad ("" = todas).
         // Cuentan todas: también las de educadoras y admins que juegan.
-        private List<Partida> PartidasFiltradas(string modo, string dificultad)
+        private List<Partida> PartidasFiltradas(string dificultad)
         {
             List<Partida> lista = new List<Partida>();
             foreach (Partida p in Datos.Partidas)
             {
-                if (p.Modo == modo && (dificultad == "" || p.Nivel.ToLower() == dificultad.ToLower()))
+                if (dificultad == "" || p.Nivel == dificultad)
                 {
                     lista.Add(p);
                 }
@@ -178,55 +120,23 @@ namespace TopohitEscritorio.Pantallas
 
         private void CargarGeneral()
         {
-            string modo = ModoElegido();
-
-            // Grupos de la gráfica: niveles 1-10 en Historia, dificultades en los otros modos
-            List<string> grupos = new List<string>();
-            if (modo == "historia")
+            // Grupos de las gráficas: las tres dificultades o la elegida en el combo
+            List<string> grupos = Calculos.NombresDificultades();
+            if (cmbDificultad.SelectedIndex > 0)
             {
-                for (int n = 1; n <= 10; n++)
-                {
-                    grupos.Add(n.ToString());
-                }
-                lblGraf1Titulo.Text = "Aciertos y errores por nivel (Historia)";
-                lblGraf2Titulo.Text = "Tiempo medio de reacción por zona";
+                string elegida = grupos[cmbDificultad.SelectedIndex - 1];
+                grupos = new List<string>();
+                grupos.Add(elegida);
             }
-            else
-            {
-                if (cmbDificultad.SelectedIndex > 0)
-                {
-                    grupos.Add(NombresDificultades(modo)[cmbDificultad.SelectedIndex - 1]);
-                }
-                else
-                {
-                    grupos = NombresDificultades(modo);
-                }
-                string nombreModo = cmbModo.Text.Replace("Modo: ", "");
-                lblGraf1Titulo.Text = "Aciertos y errores por dificultad (" + nombreModo + ")";
-                lblGraf2Titulo.Text = "Tiempo medio de reacción";
-            }
+            lblGraf1Titulo.Text = "Aciertos y errores por dificultad";
+            lblGraf2Titulo.Text = "Tiempo medio de reacción";
 
             // 1. Gráfica de aciertos y errores (media por partida)
             double[] aciertos = new double[grupos.Count];
             double[] errores = new double[grupos.Count];
             for (int i = 0; i < grupos.Count; i++)
             {
-                List<Partida> partidas;
-                if (modo == "historia")
-                {
-                    partidas = new List<Partida>();
-                    foreach (Partida p in PartidasFiltradas("historia", ""))
-                    {
-                        if (p.NivelNumero == i + 1)
-                        {
-                            partidas.Add(p);
-                        }
-                    }
-                }
-                else
-                {
-                    partidas = PartidasFiltradas(modo, grupos[i]);
-                }
+                List<Partida> partidas = PartidasFiltradas(grupos[i]);
                 if (partidas.Count > 0)
                 {
                     int sumaAciertos = 0;
@@ -243,41 +153,16 @@ namespace TopohitEscritorio.Pantallas
             series.Add(errores);
             Ui.DibujarBarras(pnlBarras1, grupos.ToArray(), series, new Color[] { Ui.Naranja, Ui.Verde }, null);
 
-            // 2. Gráfica de reacción: por zona en Historia, por dificultad en los otros
-            List<string> grupos2 = new List<string>();
-            List<double> reacciones = new List<double>();
-            if (modo == "historia")
+            // 2. Gráfica de reacción por dificultad
+            double[] reacciones = new double[grupos.Count];
+            string[] textos = new string[grupos.Count];
+            for (int i = 0; i < grupos.Count; i++)
             {
-                string[] zonas = { "Campo", "Huerto", "Mina" };
-                foreach (string zona in zonas)
+                int reaccion = Calculos.ReaccionMedia(PartidasFiltradas(grupos[i]));
+                reacciones[i] = reaccion;
+                if (reaccion > 0)
                 {
-                    List<Partida> deZona = new List<Partida>();
-                    foreach (Partida p in PartidasFiltradas("historia", ""))
-                    {
-                        NivelHistoria nivel = Calculos.BuscarNivel(p.NivelNumero);
-                        if (nivel != null && nivel.Zona == zona)
-                        {
-                            deZona.Add(p);
-                        }
-                    }
-                    grupos2.Add(zona);
-                    reacciones.Add(Calculos.ReaccionMedia(deZona));
-                }
-            }
-            else
-            {
-                foreach (string dificultad in grupos)
-                {
-                    grupos2.Add(dificultad);
-                    reacciones.Add(Calculos.ReaccionMedia(PartidasFiltradas(modo, dificultad)));
-                }
-            }
-            string[] textos = new string[reacciones.Count];
-            for (int i = 0; i < reacciones.Count; i++)
-            {
-                if (reacciones[i] > 0)
-                {
-                    textos[i] = reacciones[i] + " ms";
+                    textos[i] = reaccion + " ms";
                 }
                 else
                 {
@@ -285,18 +170,26 @@ namespace TopohitEscritorio.Pantallas
                 }
             }
             List<double[]> serie2 = new List<double[]>();
-            serie2.Add(reacciones.ToArray());
-            Ui.DibujarBarras(pnlBarras2, grupos2.ToArray(), serie2, new Color[] { Ui.VerdeClaro }, textos);
+            serie2.Add(reacciones);
+            Ui.DibujarBarras(pnlBarras2, grupos.ToArray(), serie2, new Color[] { Ui.VerdeClaro }, textos);
 
-            // 3. Resumen por modo (siempre los tres modos)
-            List<FilaResumenModo> filas = new List<FilaResumenModo>();
-            string[] modos = { "historia", "contrarreloj", "infinito" };
-            string[] nombres = { "Historia", "Contrarreloj", "Infinito" };
-            for (int i = 0; i < modos.Length; i++)
+            // 3. Resumen por dificultad (siempre las tres y el total)
+            List<FilaResumenDificultad> filas = new List<FilaResumenDificultad>();
+            List<string> nombres = Calculos.NombresDificultades();
+            nombres.Add("Total");
+            foreach (string nombre in nombres)
             {
-                List<Partida> partidas = PartidasFiltradas(modos[i], "");
-                FilaResumenModo f = new FilaResumenModo();
-                f.Modo = nombres[i];
+                List<Partida> partidas;
+                if (nombre == "Total")
+                {
+                    partidas = PartidasFiltradas("");
+                }
+                else
+                {
+                    partidas = PartidasFiltradas(nombre);
+                }
+                FilaResumenDificultad f = new FilaResumenDificultad();
+                f.Dificultad = nombre;
                 f.Partidas = partidas.Count;
                 f.Accuracy = "—";
                 f.Errores = "—";
@@ -354,39 +247,31 @@ namespace TopohitEscritorio.Pantallas
 
             // El avatar, la etiqueta naranja del aviso y los datos en rojo se ponen en dgvRevisar_CellFormatting
 
-            // 2. Progreso del grupo en Historia (siempre con todas las partidas)
-            int[] superados = new int[10];
-            double[] estrellas = new double[10];
-            Calculos.ProgresoHistoria(superados, estrellas);
+            // 2. CAMBIO 24/11: progreso del grupo en Infinito (siempre con todas las partidas):
+            //    cuántos niños han jugado cada dificultad y la media de sus récords
+            List<string> dificultades = Calculos.NombresDificultades();
+            int[] ninos = new int[dificultades.Count];
+            int[] recordMedio = new int[dificultades.Count];
+            Calculos.ProgresoDificultades(ninos, recordMedio);
 
-            string[] niveles = new string[10];
-            string[] textos = new string[10];
-            double[] valores = new double[10];
-            Color[] colores = new Color[10];
-            for (int i = 0; i < 10; i++)
+            double[] valores = new double[dificultades.Count];
+            string[] textos = new string[dificultades.Count];
+            Color[] colores = new Color[dificultades.Count];
+            Color[] colorDe = { Ui.Verde, Ui.Naranja, Ui.Rojo };      // Fácil, Normal, Difícil
+            for (int i = 0; i < dificultades.Count; i++)
             {
-                niveles[i] = (i + 1).ToString();
-                valores[i] = superados[i];
+                valores[i] = ninos[i];
                 textos[i] = "";
-                if (superados[i] > 0)
+                if (ninos[i] > 0)
                 {
-                    textos[i] = superados[i] + "\n" + estrellas[i].ToString("0.0") + "★";
+                    textos[i] = ninos[i] + " niños\nrécord medio " + recordMedio[i];
                 }
-                NivelHistoria nivel = Calculos.BuscarNivel(i + 1);
-                colores[i] = Ui.Naranja;
-                if (nivel != null && nivel.Zona == "Huerto")
-                {
-                    colores[i] = Ui.Verde;
-                }
-                else if (nivel != null && nivel.Zona == "Mina")
-                {
-                    colores[i] = Ui.Morado;
-                }
+                colores[i] = colorDe[i % colorDe.Length];
             }
             List<double[]> serie = new List<double[]>();
             serie.Add(valores);
-            Ui.DibujarBarras(pnlBarras3, niveles, serie, new Color[] { Ui.Naranja }, textos, colores);
-            lblProgresoSub.Text = "Niños que han superado cada nivel (de " + totalNinos + ") · ★ media obtenida";
+            Ui.DibujarBarras(pnlBarras3, dificultades.ToArray(), serie, new Color[] { Ui.Naranja }, textos, colores);
+            lblProgresoSub.Text = "Niños que han jugado cada dificultad (de " + totalNinos + ") · récord medio";
         }
 
         // La tabla llama a este evento cada vez que va a pintar una celda.
@@ -402,7 +287,7 @@ namespace TopohitEscritorio.Pantallas
 
             if (e.ColumnIndex == colRevAvatar.Index)
             {
-                e.Value = Ui.Avatar(f.Jugador.Tematica);
+                e.Value = Ui.Avatar(f.Jugador.AvatarId);     // CAMBIO 24/11: su avatar (antes, el de la temática)
             }
             else if (e.ColumnIndex == colRevAviso.Index)
             {
@@ -424,9 +309,9 @@ namespace TopohitEscritorio.Pantallas
             {
                 PintarRojo(e.CellStyle, f.AbandonadasEnRojo);
             }
-            else if (e.ColumnIndex == colRevHistoria.Index)
+            else if (e.ColumnIndex == colRevDificultad.Index)
             {
-                PintarRojo(e.CellStyle, f.HistoriaEnRojo);
+                PintarRojo(e.CellStyle, f.DificultadEnRojo);
             }
         }
 
@@ -447,14 +332,12 @@ namespace TopohitEscritorio.Pantallas
             txtCriterio1.Text = Calculos.ReaccionLenta.ToString();
             txtCriterio2.Text = Calculos.PrecisionBaja.ToString();
             txtCriterio3.Text = Calculos.AbandonosAltos.ToString();
-            txtCriterio4.Text = Calculos.IntentosAtascado.ToString();
             txtCriterio5.Text = Calculos.DiasSinJugar.ToString();
 
             bool admin = Datos.EsAdmin();
             txtCriterio1.ReadOnly = !admin;
             txtCriterio2.ReadOnly = !admin;
             txtCriterio3.ReadOnly = !admin;
-            txtCriterio4.ReadOnly = !admin;
             txtCriterio5.ReadOnly = !admin;
             btnGuardarCriterios.Visible = admin;
             if (!admin)
@@ -481,10 +364,9 @@ namespace TopohitEscritorio.Pantallas
             c.ReaccionLenta = LeerCriterio(txtCriterio1);
             c.PrecisionBaja = LeerCriterio(txtCriterio2);
             c.AbandonosAltos = LeerCriterio(txtCriterio3);
-            c.IntentosAtascado = LeerCriterio(txtCriterio4);
+            c.IntentosAtascado = Calculos.IntentosAtascado;     // CAMBIO 24/11: ya no se usa, se envía igual
             c.DiasSinJugar = LeerCriterio(txtCriterio5);
-            if (c.ReaccionLenta == -1 || c.PrecisionBaja == -1 || c.AbandonosAltos == -1 ||
-                c.IntentosAtascado == -1 || c.DiasSinJugar == -1)
+            if (c.ReaccionLenta == -1 || c.PrecisionBaja == -1 || c.AbandonosAltos == -1 || c.DiasSinJugar == -1)
             {
                 MessageBox.Show("Todos los criterios tienen que ser números enteros mayores que 0.", "Datos incorrectos",
                                 MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -525,7 +407,6 @@ namespace TopohitEscritorio.Pantallas
             Calculos.ReaccionLenta = c.ReaccionLenta;
             Calculos.PrecisionBaja = c.PrecisionBaja;
             Calculos.AbandonosAltos = c.AbandonosAltos;
-            Calculos.IntentosAtascado = c.IntentosAtascado;
             Calculos.DiasSinJugar = c.DiasSinJugar;
             CargarSeguimiento();
             MessageBox.Show("Criterios guardados.", "Guardado", MessageBoxButtons.OK, MessageBoxIcon.Information);

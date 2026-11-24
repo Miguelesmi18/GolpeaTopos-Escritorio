@@ -28,7 +28,7 @@
             this.lblNombre = new System.Windows.Forms.Label();
             this.lblRegistrado = new System.Windows.Forms.Label();
             this.lblSeQuedo = new System.Windows.Forms.Label();
-            this.cmbModo = new System.Windows.Forms.ComboBox();
+            this.cmbDificultad = new System.Windows.Forms.ComboBox();
             this.btnBloqueos = new System.Windows.Forms.Button();
             this.lblCardTitulo1 = new System.Windows.Forms.Label();
             this.lblCardValor1 = new System.Windows.Forms.Label();
@@ -56,7 +56,7 @@
             this.lblHistorialTitulo = new System.Windows.Forms.Label();
             this.dgvHistorial = new System.Windows.Forms.DataGridView();
             this.colFecha = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colModoNivel = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDificultad = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colPuntos = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colHits = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colErrores = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -130,7 +130,7 @@
             this.lblRegistrado.Name = "lblRegistrado";
             this.lblRegistrado.Text = "Registrado el";
             // 
-            // lblSeQuedo: en qué juego se quedó el niño y su avance en Historia
+            // lblSeQuedo: su última partida y hasta qué dificultad ha llegado (CAMBIO 24/11)
             // 
             this.lblSeQuedo.AutoSize = true;
             this.lblSeQuedo.BackColor = System.Drawing.Color.Transparent;
@@ -140,16 +140,16 @@
             this.lblSeQuedo.Name = "lblSeQuedo";
             this.lblSeQuedo.Text = "Se quedó en:";
             // 
-            // cmbModo
+            // cmbDificultad
             // 
-            this.cmbModo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbModo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmbModo.Font = new System.Drawing.Font("Segoe UI", 10.5F);
-            this.cmbModo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(35)))), ((int)(((byte)(20)))));
-            this.cmbModo.Location = new System.Drawing.Point(960, 58);
-            this.cmbModo.Name = "cmbModo";
-            this.cmbModo.Size = new System.Drawing.Size(200, 27);
-            this.cmbModo.SelectedIndexChanged += new System.EventHandler(this.cmbModo_SelectedIndexChanged);
+            this.cmbDificultad.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbDificultad.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmbDificultad.Font = new System.Drawing.Font("Segoe UI", 10.5F);
+            this.cmbDificultad.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(35)))), ((int)(((byte)(20)))));
+            this.cmbDificultad.Location = new System.Drawing.Point(960, 58);
+            this.cmbDificultad.Name = "cmbDificultad";
+            this.cmbDificultad.Size = new System.Drawing.Size(200, 27);
+            this.cmbDificultad.SelectedIndexChanged += new System.EventHandler(this.cmbDificultad_SelectedIndexChanged);
             // 
             // lblCardTitulo1
             // 
@@ -380,7 +380,7 @@
             // 
             this.dgvHistorial.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colFecha,
-            this.colModoNivel,
+            this.colDificultad,
             this.colPuntos,
             this.colHits,
             this.colErrores,
@@ -403,14 +403,14 @@
             this.colFecha.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.colFecha.Width = 130;
             // 
-            // colModoNivel
+            // colDificultad
             // 
-            this.colModoNivel.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colModoNivel.DataPropertyName = "ModoNivelTexto";
-            this.colModoNivel.HeaderText = "MODO · NIVEL";
-            this.colModoNivel.Name = "colModoNivel";
-            this.colModoNivel.ReadOnly = true;
-            this.colModoNivel.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colDificultad.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colDificultad.DataPropertyName = "Nivel";
+            this.colDificultad.HeaderText = "DIFICULTAD";
+            this.colDificultad.Name = "colDificultad";
+            this.colDificultad.ReadOnly = true;
+            this.colDificultad.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // colPuntos
             // 
@@ -506,7 +506,7 @@
             this.Controls.Add(this.lblNombre);
             this.Controls.Add(this.lblRegistrado);
             this.Controls.Add(this.lblSeQuedo);
-            this.Controls.Add(this.cmbModo);
+            this.Controls.Add(this.cmbDificultad);
             this.Controls.Add(this.btnBloqueos);
             this.Controls.Add(this.pnlCard1Borde);
             this.Controls.Add(this.pnlCard2Borde);
@@ -553,7 +553,7 @@
         private System.Windows.Forms.Label lblNombre;
         private System.Windows.Forms.Label lblRegistrado;
         private System.Windows.Forms.Label lblSeQuedo;
-        private System.Windows.Forms.ComboBox cmbModo;
+        private System.Windows.Forms.ComboBox cmbDificultad;
         private System.Windows.Forms.Button btnBloqueos;
         private System.Windows.Forms.Label lblCardTitulo1;
         private System.Windows.Forms.Label lblCardValor1;
@@ -581,7 +581,7 @@
         private System.Windows.Forms.Label lblHistorialTitulo;
         private System.Windows.Forms.DataGridView dgvHistorial;
         private System.Windows.Forms.DataGridViewTextBoxColumn colFecha;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colModoNivel;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colDificultad;
         private System.Windows.Forms.DataGridViewTextBoxColumn colPuntos;
         private System.Windows.Forms.DataGridViewTextBoxColumn colHits;
         private System.Windows.Forms.DataGridViewTextBoxColumn colErrores;

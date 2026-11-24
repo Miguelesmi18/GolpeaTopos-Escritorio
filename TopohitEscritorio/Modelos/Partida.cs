@@ -11,8 +11,8 @@ namespace TopohitEscritorio.Modelos
         public string SessionId { get; set; }      // session_id
         public string NombreUsuario { get; set; }  // username
         public DateTime Fecha { get; set; }        // date_time
-        public string Modo { get; set; }           // historia, contrarreloj o infinito
-        public string Nivel { get; set; }          // "4" en historia, "fácil" en los otros
+        public string Modo { get; set; }           // "infinito" (CAMBIO 24/11: solo se cargan las de Infinito)
+        public string Nivel { get; set; }          // la dificultad: "Fácil", "Normal" o "Difícil"
         public int Duracion { get; set; }          // session_length (segundos)
         public int Puntos { get; set; }            // final_score
         public int Aciertos { get; set; }          // hits
@@ -52,24 +52,6 @@ namespace TopohitEscritorio.Modelos
             get { return Fecha.ToString("dd/MM HH:mm"); }
         }
 
-        // "Historia · 4" o "Contrarreloj · Fácil"
-        public string ModoNivelTexto
-        {
-            get
-            {
-                string modo = Modo;
-                if (modo.Length > 0)
-                {
-                    modo = modo.Substring(0, 1).ToUpper() + modo.Substring(1);   // primera letra en mayúscula
-                }
-                if (Nivel == "")
-                {
-                    return modo;
-                }
-                return modo + " · " + Nivel;
-            }
-        }
-
         public string ReaccionTexto
         {
             get
@@ -96,20 +78,6 @@ namespace TopohitEscritorio.Modelos
                     return "Abandonada";
                 }
                 return "Completa";
-            }
-        }
-
-        // Número del nivel de Historia (0 si no es Historia)
-        public int NivelNumero
-        {
-            get
-            {
-                int numero;
-                if (Modo == "historia" && int.TryParse(Nivel, out numero))
-                {
-                    return numero;
-                }
-                return 0;
             }
         }
 

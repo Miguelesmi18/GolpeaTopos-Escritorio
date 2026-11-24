@@ -111,7 +111,7 @@ namespace TopohitEscritorio.Modelos
         public int ReaccionLenta { get; set; }      // % más lenta que la media del grupo
         public int PrecisionBaja { get; set; }      // % de precisión mínimo
         public int AbandonosAltos { get; set; }     // partidas abandonadas
-        public int IntentosAtascado { get; set; }   // intentos sin superar un nivel de Historia
+        public int IntentosAtascado { get; set; }   // CAMBIO 24/11: ya no se usa (era de Historia); se reenvía igual
         public int DiasSinJugar { get; set; }       // días sin ninguna partida
     }
 

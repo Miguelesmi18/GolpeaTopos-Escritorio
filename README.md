@@ -15,6 +15,26 @@ a la Web API ([ASP.NET-Core-Web-API-Topohit](https://github.com/TankistyT80/ASP.
 1. Arranca la API (perfil http, puerto 5110). La dirección está en `Servicios/Api.cs` (`DIRECCION`).
 2. Abre `TopohitEscritorio.sln` en Visual Studio y ejecuta.
 
+## Cambios del 24/11/2026 (3) · las estadísticas solo enseñan el modo Infinito
+
+- `Datos` **solo carga las partidas de Infinito**. Las antiguas de Historia y Contrarreloj siguen en la base de datos,
+  pero el escritorio ya no las enseña. El modo demo también tiene solo partidas de Infinito.
+- **Estadísticas · General**:
+  - el desplegable de modos desaparece; queda el de dificultad (todas, Fácil, Normal o Difícil);
+  - las gráficas y el **resumen** son **por dificultad**, con una fila «Total».
+- **Estadísticas · Seguimiento**:
+  - la columna «Modo Historia» pasa a **Dificultad** (la más alta que ha jugado y su récord, o «Sin empezar»);
+  - la gráfica pasa a **Progreso del grupo en Infinito** (cuántos niños han jugado cada dificultad y su récord medio);
+  - el avatar de cada niño es el suyo.
+- **Se quita el aviso «Atascado en un nivel»** (decisión del equipo). La columna `intentos_atascado` sigue en
+  `CRITERIOS_AVISO` y se reenvía sin cambiarla, porque la API la pide al guardar los criterios.
+- **Ficha del jugador**:
+  - el desplegable filtra por dificultad;
+  - «Se quedó en» enseña la última partida y «Ha llegado a: Difícil · récord 2340»;
+  - el historial tiene la columna **Dificultad**.
+- Se han quitado el código de Historia de `Calculos` (estrellas, niveles, progreso), `Partida.ModoNivelTexto`,
+  `Partida.NivelNumero` y el color `Ui.Morado`.
+
 ## Cambios del 24/11/2026 (2) · pantalla Métricas (reto «Mètriques dels jocs»)
 
 - **Barra lateral → Métricas** (`FormMetricas`). Enseña las métricas de **todos** los jugadores de Infinito y el modelo

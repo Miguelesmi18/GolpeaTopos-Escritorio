@@ -38,15 +38,17 @@ namespace TopohitEscritorio.Pantallas
             lblSeQuedo.Text = TextoSeQuedo();
             Ui.BotonSecundario(btnBloqueos);     // CAMBIO 24/11
 
-            cmbModo.Items.Add("Todos los modos");
-            cmbModo.Items.Add("Historia");
-            cmbModo.Items.Add("Contrarreloj");
-            cmbModo.Items.Add("Infinito");
-            cmbModo.SelectedIndex = 0;      // esto llama a cmbModo_SelectedIndexChanged -> CargarDatos()
+            // CAMBIO 24/11: solo Infinito; el desplegable filtra por dificultad (antes, por modo)
+            cmbDificultad.Items.Add("Todas las dificultades");
+            foreach (string nombre in Calculos.NombresDificultades())
+            {
+                cmbDificultad.Items.Add(nombre);
+            }
+            cmbDificultad.SelectedIndex = 0;      // esto llama a cmbDificultad_SelectedIndexChanged -> CargarDatos()
         }
 
-        // Línea "Se quedó en": el último juego que jugó y hasta dónde ha llegado en Historia.
-        // Ejemplo: "Se quedó en: Historia · 4 (abandonada) · Hoy 10:31   ·   Historia: va por el nivel 4 · 6★"
+        // Línea "Se quedó en": su última partida y hasta qué dificultad ha llegado (CAMBIO 24/11).
+        // Ejemplo: "Se quedó en: Normal (abandonada) · Hoy 10:31   ·   Ha llegado a: Normal · récord 1489"
         private string TextoSeQuedo()
         {
             List<Partida> todas = Calculos.PartidasDe(jugador.NombreUsuario, null);
@@ -64,42 +66,30 @@ namespace TopohitEscritorio.Pantallas
                     ultima = p;
                 }
             }
-            string texto = "Se quedó en: " + ultima.ModoNivelTexto;
+            string texto = "Se quedó en: " + ultima.Nivel;
             if (ultima.Abandonada)
             {
                 texto = texto + " (abandonada)";
             }
             texto = texto + " · " + Calculos.TextoFecha(ultima.Fecha);
 
-            // 2. Modo Historia: el primer nivel que todavía no ha superado (con 1★ o más)
-            List<Partida> historia = Calculos.PartidasDe(jugador.NombreUsuario, "historia");
-            if (historia.Count == 0)
-            {
-                return texto + "   ·   Historia: sin empezar";
-            }
-            // CAMBIO 18/11-B: misma regla que la API y la pestaña Seguimiento (se saltan los niveles desactivados)
-            int estrellasTotal;
-            int nivelActual = Calculos.NivelActualHistoria(historia, out estrellasTotal);
-            if (nivelActual == 0)
-            {
-                return texto + "   ·   Historia completada · " + estrellasTotal + "★";
-            }
-            return texto + "   ·   Historia: va por el nivel " + nivelActual + " · " + estrellasTotal + "★";
+            // 2. La dificultad más alta que ha jugado y su récord en ella
+            return texto + "   ·   Ha llegado a: " + Calculos.TextoDificultad(jugador.NombreUsuario);
         }
 
-        private void cmbModo_SelectedIndexChanged(object sender, EventArgs e)
+        private void cmbDificultad_SelectedIndexChanged(object sender, EventArgs e)
         {
             CargarDatos();
         }
 
         private void CargarDatos()
         {
-            string modo = null;     // null = todos los modos
-            if (cmbModo.SelectedIndex > 0)
+            string dificultad = null;     // null = todas las dificultades
+            if (cmbDificultad.SelectedIndex > 0)
             {
-                modo = cmbModo.Text.ToLower();
+                dificultad = cmbDificultad.Text;
             }
-            List<Partida> partidas = Calculos.PartidasDe(jugador.NombreUsuario, modo);
+            List<Partida> partidas = Calculos.PartidasDe(jugador.NombreUsuario, dificultad);
 
             // 1. Tarjetas
             lblCardValor1.Text = partidas.Count.ToString();

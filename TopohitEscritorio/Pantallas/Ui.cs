@@ -20,7 +20,6 @@ namespace TopohitEscritorio.Pantallas
         public static Color Linea = Color.FromArgb(242, 228, 200);       // líneas de las tablas
         public static Color Verde = Color.FromArgb(91, 170, 58);         // errores en las gráficas
         public static Color VerdeClaro = Color.FromArgb(140, 198, 110);  // barras de reacción
-        public static Color Morado = Color.FromArgb(128, 70, 200);       // zona Mina
         public static Color Rojo = Color.FromArgb(200, 50, 40);          // datos que provocan un aviso
         public static Color Beige = Color.FromArgb(246, 226, 190);       // etiqueta "Completa"
 

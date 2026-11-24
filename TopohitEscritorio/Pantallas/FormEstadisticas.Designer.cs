@@ -27,7 +27,6 @@
             this.lblSubtitulo = new System.Windows.Forms.Label();
             this.btnTabGeneral = new System.Windows.Forms.Button();
             this.btnTabSeguimiento = new System.Windows.Forms.Button();
-            this.cmbModo = new System.Windows.Forms.ComboBox();
             this.cmbDificultad = new System.Windows.Forms.ComboBox();
             this.lblGraf1Titulo = new System.Windows.Forms.Label();
             this.lblLeyHits = new System.Windows.Forms.Label();
@@ -42,7 +41,7 @@
             this.pnlGraf2Borde = new System.Windows.Forms.Panel();
             this.lblResumenTitulo = new System.Windows.Forms.Label();
             this.dgvResumen = new System.Windows.Forms.DataGridView();
-            this.colResModo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colResDificultad = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colResPartidas = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colResAccuracy = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colResErrores = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -61,15 +60,15 @@
             this.colRevReaccion = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colRevPrecision = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colRevAbandonadas = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colRevHistoria = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colRevDificultad = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colRevVer = new System.Windows.Forms.DataGridViewButtonColumn();
             this.pnlRevisar = new System.Windows.Forms.Panel();
             this.pnlRevisarBorde = new System.Windows.Forms.Panel();
             this.lblProgresoTitulo = new System.Windows.Forms.Label();
             this.lblProgresoSub = new System.Windows.Forms.Label();
-            this.lblLeyCampo = new System.Windows.Forms.Label();
-            this.lblLeyHuerto = new System.Windows.Forms.Label();
-            this.lblLeyMina = new System.Windows.Forms.Label();
+            this.lblLeyFacil = new System.Windows.Forms.Label();
+            this.lblLeyNormal = new System.Windows.Forms.Label();
+            this.lblLeyDificil = new System.Windows.Forms.Label();
             this.pnlBarras3 = new System.Windows.Forms.Panel();
             this.pnlProgreso = new System.Windows.Forms.Panel();
             this.pnlProgresoBorde = new System.Windows.Forms.Panel();
@@ -78,13 +77,11 @@
             this.lblCriterio1 = new System.Windows.Forms.Label();
             this.lblCriterio2 = new System.Windows.Forms.Label();
             this.lblCriterio3 = new System.Windows.Forms.Label();
-            this.lblCriterio4 = new System.Windows.Forms.Label();
             this.lblCriterio5 = new System.Windows.Forms.Label();
             this.lblCriteriosNota = new System.Windows.Forms.Label();
             this.txtCriterio1 = new System.Windows.Forms.TextBox();
             this.txtCriterio2 = new System.Windows.Forms.TextBox();
             this.txtCriterio3 = new System.Windows.Forms.TextBox();
-            this.txtCriterio4 = new System.Windows.Forms.TextBox();
             this.txtCriterio5 = new System.Windows.Forms.TextBox();
             this.btnGuardarCriterios = new System.Windows.Forms.Button();
             this.pnlCriterios = new System.Windows.Forms.Panel();
@@ -163,24 +160,13 @@
             this.btnTabSeguimiento.UseVisualStyleBackColor = false;
             this.btnTabSeguimiento.Click += new System.EventHandler(this.btnTabSeguimiento_Click);
             // 
-            // cmbModo
-            // 
-            this.cmbModo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbModo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmbModo.Font = new System.Drawing.Font("Segoe UI", 10.5F);
-            this.cmbModo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(35)))), ((int)(((byte)(20)))));
-            this.cmbModo.Location = new System.Drawing.Point(40, 14);
-            this.cmbModo.Name = "cmbModo";
-            this.cmbModo.Size = new System.Drawing.Size(210, 27);
-            this.cmbModo.SelectedIndexChanged += new System.EventHandler(this.cmbModo_SelectedIndexChanged);
-            // 
             // cmbDificultad
             // 
             this.cmbDificultad.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbDificultad.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmbDificultad.Font = new System.Drawing.Font("Segoe UI", 10.5F);
             this.cmbDificultad.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(35)))), ((int)(((byte)(20)))));
-            this.cmbDificultad.Location = new System.Drawing.Point(266, 14);
+            this.cmbDificultad.Location = new System.Drawing.Point(40, 14);
             this.cmbDificultad.Name = "cmbDificultad";
             this.cmbDificultad.Size = new System.Drawing.Size(210, 27);
             this.cmbDificultad.SelectedIndexChanged += new System.EventHandler(this.cmbDificultad_SelectedIndexChanged);
@@ -193,7 +179,7 @@
             this.lblGraf1Titulo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(35)))), ((int)(((byte)(20)))));
             this.lblGraf1Titulo.Location = new System.Drawing.Point(16, 12);
             this.lblGraf1Titulo.Name = "lblGraf1Titulo";
-            this.lblGraf1Titulo.Text = "Aciertos y errores por nivel (Historia)";
+            this.lblGraf1Titulo.Text = "Aciertos y errores por dificultad";
             // 
             // lblLeyHits
             // 
@@ -294,12 +280,12 @@
             this.lblResumenTitulo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(35)))), ((int)(((byte)(20)))));
             this.lblResumenTitulo.Location = new System.Drawing.Point(16, 12);
             this.lblResumenTitulo.Name = "lblResumenTitulo";
-            this.lblResumenTitulo.Text = "Resumen por modo";
+            this.lblResumenTitulo.Text = "Resumen por dificultad";
             // 
             // dgvResumen
             // 
             this.dgvResumen.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.colResModo,
+            this.colResDificultad,
             this.colResPartidas,
             this.colResAccuracy,
             this.colResErrores,
@@ -310,14 +296,14 @@
             this.dgvResumen.Name = "dgvResumen";
             this.dgvResumen.ReadOnly = true;
             // 
-            // colResModo
+            // colResDificultad
             // 
-            this.colResModo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colResModo.DataPropertyName = "Modo";
-            this.colResModo.HeaderText = "MODO";
-            this.colResModo.Name = "colResModo";
-            this.colResModo.ReadOnly = true;
-            this.colResModo.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colResDificultad.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colResDificultad.DataPropertyName = "Dificultad";
+            this.colResDificultad.HeaderText = "DIFICULTAD";
+            this.colResDificultad.Name = "colResDificultad";
+            this.colResDificultad.ReadOnly = true;
+            this.colResDificultad.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // colResPartidas
             // 
@@ -383,7 +369,6 @@
             // 
             // pnlGeneral
             // 
-            this.pnlGeneral.Controls.Add(this.cmbModo);
             this.pnlGeneral.Controls.Add(this.cmbDificultad);
             this.pnlGeneral.Controls.Add(this.pnlGraf1Borde);
             this.pnlGeneral.Controls.Add(this.pnlGraf2Borde);
@@ -433,7 +418,7 @@
             this.colRevReaccion,
             this.colRevPrecision,
             this.colRevAbandonadas,
-            this.colRevHistoria,
+            this.colRevDificultad,
             this.colRevVer});
             this.dgvRevisar.Location = new System.Drawing.Point(14, 46);
             this.dgvRevisar.Size = new System.Drawing.Size(1088, 280);
@@ -495,14 +480,14 @@
             this.colRevAbandonadas.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.colRevAbandonadas.Width = 130;
             // 
-            // colRevHistoria
+            // colRevDificultad
             // 
-            this.colRevHistoria.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colRevHistoria.DataPropertyName = "ModoHistoria";
-            this.colRevHistoria.HeaderText = "MODO HISTORIA";
-            this.colRevHistoria.Name = "colRevHistoria";
-            this.colRevHistoria.ReadOnly = true;
-            this.colRevHistoria.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colRevDificultad.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colRevDificultad.DataPropertyName = "Dificultad";
+            this.colRevDificultad.HeaderText = "DIFICULTAD";
+            this.colRevDificultad.Name = "colRevDificultad";
+            this.colRevDificultad.ReadOnly = true;
+            this.colRevDificultad.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // colRevVer
             // 
@@ -540,7 +525,7 @@
             this.lblProgresoTitulo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(35)))), ((int)(((byte)(20)))));
             this.lblProgresoTitulo.Location = new System.Drawing.Point(16, 12);
             this.lblProgresoTitulo.Name = "lblProgresoTitulo";
-            this.lblProgresoTitulo.Text = "Progreso del grupo en el modo Historia";
+            this.lblProgresoTitulo.Text = "Progreso del grupo en Infinito";
             // 
             // lblProgresoSub
             // 
@@ -550,37 +535,37 @@
             this.lblProgresoSub.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(118)))), ((int)(((byte)(92)))));
             this.lblProgresoSub.Location = new System.Drawing.Point(18, 38);
             this.lblProgresoSub.Name = "lblProgresoSub";
-            this.lblProgresoSub.Text = "Niños que han superado cada nivel · ★ media obtenida";
+            this.lblProgresoSub.Text = "Niños que han jugado cada dificultad · récord medio";
             // 
-            // lblLeyCampo
+            // lblLeyFacil
             // 
-            this.lblLeyCampo.AutoSize = true;
-            this.lblLeyCampo.BackColor = System.Drawing.Color.Transparent;
-            this.lblLeyCampo.Font = new System.Drawing.Font("Segoe UI", 8.5F);
-            this.lblLeyCampo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(140)))), ((int)(((byte)(40)))));
-            this.lblLeyCampo.Location = new System.Drawing.Point(430, 40);
-            this.lblLeyCampo.Name = "lblLeyCampo";
-            this.lblLeyCampo.Text = "■ Campo";
+            this.lblLeyFacil.AutoSize = true;
+            this.lblLeyFacil.BackColor = System.Drawing.Color.Transparent;
+            this.lblLeyFacil.Font = new System.Drawing.Font("Segoe UI", 8.5F);
+            this.lblLeyFacil.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(170)))), ((int)(((byte)(58)))));
+            this.lblLeyFacil.Location = new System.Drawing.Point(430, 40);
+            this.lblLeyFacil.Name = "lblLeyFacil";
+            this.lblLeyFacil.Text = "■ Fácil";
             // 
-            // lblLeyHuerto
+            // lblLeyNormal
             // 
-            this.lblLeyHuerto.AutoSize = true;
-            this.lblLeyHuerto.BackColor = System.Drawing.Color.Transparent;
-            this.lblLeyHuerto.Font = new System.Drawing.Font("Segoe UI", 8.5F);
-            this.lblLeyHuerto.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(170)))), ((int)(((byte)(58)))));
-            this.lblLeyHuerto.Location = new System.Drawing.Point(494, 40);
-            this.lblLeyHuerto.Name = "lblLeyHuerto";
-            this.lblLeyHuerto.Text = "■ Huerto";
+            this.lblLeyNormal.AutoSize = true;
+            this.lblLeyNormal.BackColor = System.Drawing.Color.Transparent;
+            this.lblLeyNormal.Font = new System.Drawing.Font("Segoe UI", 8.5F);
+            this.lblLeyNormal.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(140)))), ((int)(((byte)(40)))));
+            this.lblLeyNormal.Location = new System.Drawing.Point(494, 40);
+            this.lblLeyNormal.Name = "lblLeyNormal";
+            this.lblLeyNormal.Text = "■ Normal";
             // 
-            // lblLeyMina
+            // lblLeyDificil
             // 
-            this.lblLeyMina.AutoSize = true;
-            this.lblLeyMina.BackColor = System.Drawing.Color.Transparent;
-            this.lblLeyMina.Font = new System.Drawing.Font("Segoe UI", 8.5F);
-            this.lblLeyMina.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(70)))), ((int)(((byte)(200)))));
-            this.lblLeyMina.Location = new System.Drawing.Point(560, 40);
-            this.lblLeyMina.Name = "lblLeyMina";
-            this.lblLeyMina.Text = "■ Mina";
+            this.lblLeyDificil.AutoSize = true;
+            this.lblLeyDificil.BackColor = System.Drawing.Color.Transparent;
+            this.lblLeyDificil.Font = new System.Drawing.Font("Segoe UI", 8.5F);
+            this.lblLeyDificil.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(50)))), ((int)(((byte)(40)))));
+            this.lblLeyDificil.Location = new System.Drawing.Point(560, 40);
+            this.lblLeyDificil.Name = "lblLeyDificil";
+            this.lblLeyDificil.Text = "■ Difícil";
             // 
             // pnlBarras3
             // 
@@ -593,9 +578,9 @@
             // 
             this.pnlProgreso.Controls.Add(this.lblProgresoTitulo);
             this.pnlProgreso.Controls.Add(this.lblProgresoSub);
-            this.pnlProgreso.Controls.Add(this.lblLeyCampo);
-            this.pnlProgreso.Controls.Add(this.lblLeyHuerto);
-            this.pnlProgreso.Controls.Add(this.lblLeyMina);
+            this.pnlProgreso.Controls.Add(this.lblLeyFacil);
+            this.pnlProgreso.Controls.Add(this.lblLeyNormal);
+            this.pnlProgreso.Controls.Add(this.lblLeyDificil);
             this.pnlProgreso.Controls.Add(this.pnlBarras3);
             this.pnlProgreso.BackColor = System.Drawing.Color.White;
             this.pnlProgreso.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -660,23 +645,13 @@
             this.lblCriterio3.Name = "lblCriterio3";
             this.lblCriterio3.Text = "●  Partidas abandonadas (o más)";
             // 
-            // lblCriterio4
-            // 
-            this.lblCriterio4.AutoSize = true;
-            this.lblCriterio4.BackColor = System.Drawing.Color.Transparent;
-            this.lblCriterio4.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblCriterio4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(35)))), ((int)(((byte)(20)))));
-            this.lblCriterio4.Location = new System.Drawing.Point(18, 176);
-            this.lblCriterio4.Name = "lblCriterio4";
-            this.lblCriterio4.Text = "●  Intentos sin superar un nivel de Historia";
-            // 
             // lblCriterio5
             // 
             this.lblCriterio5.AutoSize = true;
             this.lblCriterio5.BackColor = System.Drawing.Color.Transparent;
             this.lblCriterio5.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblCriterio5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(35)))), ((int)(((byte)(20)))));
-            this.lblCriterio5.Location = new System.Drawing.Point(18, 210);
+            this.lblCriterio5.Location = new System.Drawing.Point(18, 176);
             this.lblCriterio5.Name = "lblCriterio5";
             this.lblCriterio5.Text = "●  Días seguidos sin jugar (o más)";
             // 
@@ -720,22 +695,12 @@
             this.txtCriterio3.Size = new System.Drawing.Size(60, 25);
             this.txtCriterio3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // txtCriterio4
-            // 
-            this.txtCriterio4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtCriterio4.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.txtCriterio4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(35)))), ((int)(((byte)(20)))));
-            this.txtCriterio4.Location = new System.Drawing.Point(372, 173);
-            this.txtCriterio4.Name = "txtCriterio4";
-            this.txtCriterio4.Size = new System.Drawing.Size(60, 25);
-            this.txtCriterio4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
             // txtCriterio5
             // 
             this.txtCriterio5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtCriterio5.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.txtCriterio5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(35)))), ((int)(((byte)(20)))));
-            this.txtCriterio5.Location = new System.Drawing.Point(372, 207);
+            this.txtCriterio5.Location = new System.Drawing.Point(372, 173);
             this.txtCriterio5.Name = "txtCriterio5";
             this.txtCriterio5.Size = new System.Drawing.Size(60, 25);
             this.txtCriterio5.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -763,13 +728,11 @@
             this.pnlCriterios.Controls.Add(this.lblCriterio1);
             this.pnlCriterios.Controls.Add(this.lblCriterio2);
             this.pnlCriterios.Controls.Add(this.lblCriterio3);
-            this.pnlCriterios.Controls.Add(this.lblCriterio4);
             this.pnlCriterios.Controls.Add(this.lblCriterio5);
             this.pnlCriterios.Controls.Add(this.lblCriteriosNota);
             this.pnlCriterios.Controls.Add(this.txtCriterio1);
             this.pnlCriterios.Controls.Add(this.txtCriterio2);
             this.pnlCriterios.Controls.Add(this.txtCriterio3);
-            this.pnlCriterios.Controls.Add(this.txtCriterio4);
             this.pnlCriterios.Controls.Add(this.txtCriterio5);
             this.pnlCriterios.Controls.Add(this.btnGuardarCriterios);
             this.pnlCriterios.BackColor = System.Drawing.Color.White;
@@ -858,7 +821,6 @@
         private System.Windows.Forms.Label lblSubtitulo;
         private System.Windows.Forms.Button btnTabGeneral;
         private System.Windows.Forms.Button btnTabSeguimiento;
-        private System.Windows.Forms.ComboBox cmbModo;
         private System.Windows.Forms.ComboBox cmbDificultad;
         private System.Windows.Forms.Label lblGraf1Titulo;
         private System.Windows.Forms.Label lblLeyHits;
@@ -873,7 +835,7 @@
         private System.Windows.Forms.Panel pnlGraf2Borde;
         private System.Windows.Forms.Label lblResumenTitulo;
         private System.Windows.Forms.DataGridView dgvResumen;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colResModo;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colResDificultad;
         private System.Windows.Forms.DataGridViewTextBoxColumn colResPartidas;
         private System.Windows.Forms.DataGridViewTextBoxColumn colResAccuracy;
         private System.Windows.Forms.DataGridViewTextBoxColumn colResErrores;
@@ -892,15 +854,15 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colRevReaccion;
         private System.Windows.Forms.DataGridViewTextBoxColumn colRevPrecision;
         private System.Windows.Forms.DataGridViewTextBoxColumn colRevAbandonadas;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colRevHistoria;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colRevDificultad;
         private System.Windows.Forms.DataGridViewButtonColumn colRevVer;
         private System.Windows.Forms.Panel pnlRevisar;
         private System.Windows.Forms.Panel pnlRevisarBorde;
         private System.Windows.Forms.Label lblProgresoTitulo;
         private System.Windows.Forms.Label lblProgresoSub;
-        private System.Windows.Forms.Label lblLeyCampo;
-        private System.Windows.Forms.Label lblLeyHuerto;
-        private System.Windows.Forms.Label lblLeyMina;
+        private System.Windows.Forms.Label lblLeyFacil;
+        private System.Windows.Forms.Label lblLeyNormal;
+        private System.Windows.Forms.Label lblLeyDificil;
         private System.Windows.Forms.Panel pnlBarras3;
         private System.Windows.Forms.Panel pnlProgreso;
         private System.Windows.Forms.Panel pnlProgresoBorde;
@@ -909,13 +871,11 @@
         private System.Windows.Forms.Label lblCriterio1;
         private System.Windows.Forms.Label lblCriterio2;
         private System.Windows.Forms.Label lblCriterio3;
-        private System.Windows.Forms.Label lblCriterio4;
         private System.Windows.Forms.Label lblCriterio5;
         private System.Windows.Forms.Label lblCriteriosNota;
         private System.Windows.Forms.TextBox txtCriterio1;
         private System.Windows.Forms.TextBox txtCriterio2;
         private System.Windows.Forms.TextBox txtCriterio3;
-        private System.Windows.Forms.TextBox txtCriterio4;
         private System.Windows.Forms.TextBox txtCriterio5;
         private System.Windows.Forms.Button btnGuardarCriterios;
         private System.Windows.Forms.Panel pnlCriterios;
