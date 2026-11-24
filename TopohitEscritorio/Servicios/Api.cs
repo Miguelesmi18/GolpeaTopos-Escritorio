@@ -263,6 +263,47 @@ namespace TopohitEscritorio.Servicios
             return await ComprobarOk(response);
         }
 
+        // ---------- CAMBIO 24/11: dificultades de Infinito y bloqueos ----------
+        // Los nombres llevan tilde ("Fácil"), así que en la ruta van con Uri.EscapeDataString.
+
+        // PUT api/modos/infinito/{nombre}: vidas, aceleración y puntos para desbloquear. true si va bien (200)
+        public static async Task<bool> GuardarInfinito(DificultadInfinito d)
+        {
+            string ruta = "api/modos/infinito/" + Uri.EscapeDataString(d.Nombre);
+            HttpResponseMessage response = await client.PutAsJsonAsync(ruta, d);
+            return await ComprobarOk(response);
+        }
+
+        // GET api/jugadores/{id}/bloqueos: cómo están las 3 dificultades para ese jugador. null si hay error.
+        public static async Task<List<EstadoDificultad>> GetBloqueos(int idUsuario)
+        {
+            HttpResponseMessage response = await client.GetAsync("api/jugadores/" + idUsuario + "/bloqueos");
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                await GuardarError(response);
+                return null;
+            }
+            return await response.Content.ReadFromJsonAsync<List<EstadoDificultad>>();
+        }
+
+        // PUT api/jugadores/{id}/bloqueos/{dificultad}: bloquea (o cambia el motivo). true si va bien (200)
+        public static async Task<bool> Bloquear(int idUsuario, string dificultad, string motivo)
+        {
+            BloqueoPeticion peticion = new BloqueoPeticion();
+            peticion.Motivo = motivo;
+            string ruta = "api/jugadores/" + idUsuario + "/bloqueos/" + Uri.EscapeDataString(dificultad);
+            HttpResponseMessage response = await client.PutAsJsonAsync(ruta, peticion);
+            return await ComprobarOk(response);
+        }
+
+        // DELETE api/jugadores/{id}/bloqueos/{dificultad}: quita el bloqueo. true si va bien (200)
+        public static async Task<bool> Desbloquear(int idUsuario, string dificultad)
+        {
+            string ruta = "api/jugadores/" + idUsuario + "/bloqueos/" + Uri.EscapeDataString(dificultad);
+            HttpResponseMessage response = await client.DeleteAsync(ruta);
+            return await ComprobarOk(response);
+        }
+
         // GET api/modos/criterios: los criterios de aviso de Seguimiento. null si hay error.
         public static async Task<CriteriosAviso> GetCriterios()
         {

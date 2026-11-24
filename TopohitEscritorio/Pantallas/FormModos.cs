@@ -8,15 +8,15 @@ using TopohitEscritorio.Servicios;
 
 namespace TopohitEscritorio.Pantallas
 {
-    // Pantalla "Modos y niveles" (reto "Protecció dels usuaris": administrar los juegos).
-    // La educadora solo puede activar o desactivar los niveles del modo Historia.
-    // El resto de datos (agujeros, objetivo, tiempo...) se ven pero no se cambian:
-    // son el diseño del juego y no los piden los retos.
+    // Pantalla "Dificultades" (reto "Protecció dels usuaris": administrar los juegos).
+    // CAMBIO 24/11: el juego solo tiene el modo Infinito. Aquí la educadora cambia, de cada dificultad,
+    // las vidas, cuánto acelera y los PUNTOS que hay que conseguir en la dificultad anterior para abrirla.
+    // Los bloqueos de un jugador concreto se hacen en su ficha (botón "Bloquear dificultades").
     public partial class FormModos : Form
     {
-        // Cómo estaba "Activo" en cada nivel la última vez que coincidía con la base de datos.
-        // Así al guardar solo enviamos a la API los niveles que han cambiado (y no los 10 cada vez).
-        private List<bool> activosGuardados = new List<bool>();
+        // Cómo estaba cada dificultad la última vez que coincidía con la base de datos
+        // (vidas, incremento y puntos), para enviar a la API solo las que han cambiado.
+        private List<string> guardadas = new List<string>();
 
         public FormModos()
         {
@@ -25,34 +25,106 @@ namespace TopohitEscritorio.Pantallas
 
         private void FormModos_Load(object sender, EventArgs e)
         {
-            Ui.EstiloTabla(dgvHistoria);
+            Ui.EstiloTabla(dgvInfinito);
             RefrescarTabla();
         }
 
-        // Vuelve a enlazar la tabla con la lista de niveles y apunta cómo está cada uno
-        private void RefrescarTabla()
+        // Texto que resume una dificultad, para saber si ha cambiado
+        private string Huella(DificultadInfinito d)
         {
-            dgvHistoria.DataSource = null;
-            dgvHistoria.DataSource = Datos.NivelesHistoria;   // al marcar "Activo" se cambia el objeto de la lista
+            return d.Vidas + "|" + d.Incremento + "|" + d.PuntosDesbloqueo;
+        }
 
-            activosGuardados.Clear();
-            foreach (NivelHistoria n in Datos.NivelesHistoria)
+        // Pone el texto de la columna "Se abre con" a partir de la dificultad anterior de la lista
+        private void CalcularRequisitos()
+        {
+            for (int i = 0; i < Datos.Infinito.Count; i++)
             {
-                activosGuardados.Add(n.Activo);
+                DificultadInfinito d = Datos.Infinito[i];
+                if (i == 0 || d.PuntosDesbloqueo == 0)
+                {
+                    d.Requisito = "Siempre abierta";
+                }
+                else
+                {
+                    d.Requisito = d.PuntosDesbloqueo + " puntos en " + Datos.Infinito[i - 1].Nombre;
+                }
             }
         }
 
-        // Si algo no se ha guardado, volvemos a pedir los niveles a la API
+        // Vuelve a enlazar la tabla con la lista y apunta cómo está cada dificultad
+        private void RefrescarTabla()
+        {
+            CalcularRequisitos();
+            dgvInfinito.DataSource = null;
+            dgvInfinito.DataSource = Datos.Infinito;
+
+            guardadas.Clear();
+            for (int i = 0; i < Datos.Infinito.Count; i++)
+            {
+                guardadas.Add(Huella(Datos.Infinito[i]));
+            }
+        }
+
+        // La primera dificultad siempre está abierta: sus puntos no se pueden cambiar
+        private void dgvInfinito_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
+        {
+            if (e.RowIndex == 0 && dgvInfinito.Columns[e.ColumnIndex].Name == "colPuntos")
+            {
+                e.Cancel = true;
+            }
+        }
+
+        // Si se escribe algo que no es un número, no se deja salir de la celda
+        private void dgvInfinito_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            MessageBox.Show("Escribe un número entero.", "Dato no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            e.Cancel = true;
+        }
+
+        // Al cambiar los puntos se actualiza la columna "Se abre con"
+        private void dgvInfinito_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            CalcularRequisitos();
+            dgvInfinito.Refresh();
+        }
+
+        // Comprueba los valores antes de enviarlos. Devuelve "" si están bien.
+        private string Comprobar()
+        {
+            string error = "";
+            int i = 0;
+            while (i < Datos.Infinito.Count && error == "")
+            {
+                DificultadInfinito d = Datos.Infinito[i];
+                if (d.Vidas <= 0)
+                {
+                    error = d.Nombre + ": las vidas tienen que ser 1 o más.";
+                }
+                else if (d.Incremento < 0)
+                {
+                    error = d.Nombre + ": la aceleración no puede ser negativa.";
+                }
+                else if (d.PuntosDesbloqueo < 0)
+                {
+                    error = d.Nombre + ": los puntos no pueden ser negativos.";
+                }
+                i++;
+            }
+            return error;
+        }
+
+        // Si algo no se ha guardado, volvemos a pedir las dificultades a la API
         // para que la tabla enseñe lo que hay de verdad en la base de datos.
-        private async Task RecargarNiveles()
+        private async Task RecargarDificultades()
         {
             try
             {
-                List<NivelHistoria> niveles = await Api.GetNiveles();
-                if (niveles != null)
+                List<DificultadInfinito> lista = await Api.GetInfinito();
+                if (lista != null)
                 {
-                    Datos.NivelesHistoria.Clear();
-                    Datos.NivelesHistoria.AddRange(niveles);
+                    Datos.Infinito.Clear();
+                    Datos.Infinito.AddRange(lista);
                 }
             }
             catch (Exception)
@@ -64,35 +136,42 @@ namespace TopohitEscritorio.Pantallas
 
         private async void btnGuardar_Click(object sender, EventArgs e)
         {
-            dgvHistoria.EndEdit();     // termina la edición de la casilla que esté marcada
+            dgvInfinito.EndEdit();     // termina la edición de la celda que se esté escribiendo
+
+            string incorrecto = Comprobar();
+            if (incorrecto != "")
+            {
+                MessageBox.Show(incorrecto, "Dato no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
             // En modo demo solo se queda en memoria
             if (Datos.ModoDemo)
             {
+                RefrescarTabla();
                 MessageBox.Show("Cambios guardados.", "Guardado", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
             btnGuardar.Enabled = false;
             string error = "";
-            int cambiados = 0;
+            int cambiadas = 0;
             try
             {
-                for (int i = 0; i < Datos.NivelesHistoria.Count; i++)
+                for (int i = 0; i < Datos.Infinito.Count; i++)
                 {
-                    NivelHistoria n = Datos.NivelesHistoria[i];
-                    if (n.Activo == activosGuardados[i])
+                    DificultadInfinito d = Datos.Infinito[i];
+                    if (Huella(d) != guardadas[i])
                     {
-                        continue;                       // no ha cambiado: no hace falta enviarlo
-                    }
-                    cambiados++;
-                    if (await Api.GuardarNivel(n))      // PUT api/modos/historia/{numero}
-                    {
-                        activosGuardados[i] = n.Activo;  // ya está igual que en la base de datos
-                    }
-                    else
-                    {
-                        error = error + "Nivel " + n.Numero + ": " + Api.UltimoError + "\n";
+                        cambiadas++;
+                        if (await Api.GuardarInfinito(d))      // PUT api/modos/infinito/{nombre}
+                        {
+                            guardadas[i] = Huella(d);
+                        }
+                        else
+                        {
+                            error = error + d.Nombre + ": " + Api.UltimoError + "\n";
+                        }
                     }
                 }
             }
@@ -113,18 +192,18 @@ namespace TopohitEscritorio.Pantallas
                 btnGuardar.Enabled = true;
             }
 
-            if (error == "" && cambiados == 0)
+            if (error == "" && cambiadas == 0)
             {
-                MessageBox.Show("No has cambiado ningún nivel.", "Sin cambios", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("No has cambiado ninguna dificultad.", "Sin cambios", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else if (error == "")
             {
-                MessageBox.Show("Cambios guardados (" + cambiados + " niveles).", "Guardado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Cambios guardados (" + cambiadas + " dificultades).", "Guardado", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
-                MessageBox.Show("Algunos niveles no se han guardado:\n" + error, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                await RecargarNiveles();
+                MessageBox.Show("Algunas dificultades no se han guardado:\n" + error, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                await RecargarDificultades();
             }
         }
     }

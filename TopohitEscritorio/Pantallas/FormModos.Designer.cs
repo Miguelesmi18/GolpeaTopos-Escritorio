@@ -26,20 +26,19 @@
             this.lblTitulo = new System.Windows.Forms.Label();
             this.lblSubtitulo = new System.Windows.Forms.Label();
             this.btnGuardar = new System.Windows.Forms.Button();
-            this.dgvHistoria = new System.Windows.Forms.DataGridView();
-            this.colNumero = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colZona = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvInfinito = new System.Windows.Forms.DataGridView();
+            this.colNombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colAgujeros = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colObjetivo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colTiempo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colNovedad = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colActivo = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.pnlTablaHistoria = new System.Windows.Forms.Panel();
-            this.pnlTablaHistoriaBorde = new System.Windows.Forms.Panel();
+            this.colVidas = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colIncremento = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colPuntos = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colRequisito = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.pnlTablaInfinito = new System.Windows.Forms.Panel();
+            this.pnlTablaInfinitoBorde = new System.Windows.Forms.Panel();
             this.lblNota = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvHistoria)).BeginInit();
-            this.pnlTablaHistoria.SuspendLayout();
-            this.pnlTablaHistoriaBorde.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvInfinito)).BeginInit();
+            this.pnlTablaInfinito.SuspendLayout();
+            this.pnlTablaInfinitoBorde.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblTitulo
@@ -50,7 +49,7 @@
             this.lblTitulo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(140)))), ((int)(((byte)(40)))));
             this.lblTitulo.Location = new System.Drawing.Point(36, 18);
             this.lblTitulo.Name = "lblTitulo";
-            this.lblTitulo.Text = "Modos y niveles";
+            this.lblTitulo.Text = "Dificultades";
             // 
             // lblSubtitulo
             // 
@@ -60,7 +59,7 @@
             this.lblSubtitulo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(118)))), ((int)(((byte)(92)))));
             this.lblSubtitulo.Location = new System.Drawing.Point(42, 70);
             this.lblSubtitulo.Name = "lblSubtitulo";
-            this.lblSubtitulo.Text = "Niveles del modo Historia · marca o desmarca «Activo» para quitar o volver a poner un nivel · la app Android lo descarga de la API";
+            this.lblSubtitulo.Text = "Modo Infinito · cambia las vidas, la aceleración y los puntos que hay que conseguir en la dificultad anterior para abrir cada una";
             // 
             // btnGuardar
             // 
@@ -78,37 +77,30 @@
             this.btnGuardar.UseVisualStyleBackColor = false;
             this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
             // 
-            // dgvHistoria
+            // dgvInfinito
             // 
-            this.dgvHistoria.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.colNumero,
-            this.colZona,
+            this.dgvInfinito.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.colNombre,
             this.colAgujeros,
-            this.colObjetivo,
-            this.colTiempo,
-            this.colNovedad,
-            this.colActivo});
-            this.dgvHistoria.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvHistoria.Name = "dgvHistoria";
-            this.dgvHistoria.ReadOnly = false;
+            this.colVidas,
+            this.colIncremento,
+            this.colPuntos,
+            this.colRequisito});
+            this.dgvInfinito.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvInfinito.Name = "dgvInfinito";
+            this.dgvInfinito.ReadOnly = false;
+            this.dgvInfinito.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dgvInfinito_CellBeginEdit);
+            this.dgvInfinito.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvInfinito_CellEndEdit);
+            this.dgvInfinito.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dgvInfinito_DataError);
             // 
-            // colNumero
+            // colNombre
             // 
-            this.colNumero.DataPropertyName = "Numero";
-            this.colNumero.HeaderText = "NIVEL";
-            this.colNumero.Name = "colNumero";
-            this.colNumero.ReadOnly = true;
-            this.colNumero.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colNumero.Width = 80;
-            // 
-            // colZona
-            // 
-            this.colZona.DataPropertyName = "Zona";
-            this.colZona.HeaderText = "ZONA";
-            this.colZona.Name = "colZona";
-            this.colZona.ReadOnly = true;
-            this.colZona.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colZona.Width = 150;
+            this.colNombre.DataPropertyName = "Nombre";
+            this.colNombre.HeaderText = "DIFICULTAD";
+            this.colNombre.Name = "colNombre";
+            this.colNombre.ReadOnly = true;
+            this.colNombre.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colNombre.Width = 140;
             // 
             // colAgujeros
             // 
@@ -117,60 +109,60 @@
             this.colAgujeros.Name = "colAgujeros";
             this.colAgujeros.ReadOnly = true;
             this.colAgujeros.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colAgujeros.Width = 120;
+            this.colAgujeros.Width = 110;
             // 
-            // colObjetivo
+            // colVidas
             // 
-            this.colObjetivo.DataPropertyName = "Objetivo";
-            this.colObjetivo.HeaderText = "OBJETIVO";
-            this.colObjetivo.Name = "colObjetivo";
-            this.colObjetivo.ReadOnly = true;
-            this.colObjetivo.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colObjetivo.Width = 120;
+            this.colVidas.DataPropertyName = "Vidas";
+            this.colVidas.HeaderText = "VIDAS";
+            this.colVidas.Name = "colVidas";
+            this.colVidas.ReadOnly = false;
+            this.colVidas.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colVidas.Width = 100;
             // 
-            // colTiempo
+            // colIncremento
             // 
-            this.colTiempo.DataPropertyName = "Tiempo";
-            this.colTiempo.HeaderText = "TIEMPO (s)";
-            this.colTiempo.Name = "colTiempo";
-            this.colTiempo.ReadOnly = true;
-            this.colTiempo.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colTiempo.Width = 120;
+            this.colIncremento.DataPropertyName = "Incremento";
+            this.colIncremento.HeaderText = "ACELERA (% por segundo)";
+            this.colIncremento.Name = "colIncremento";
+            this.colIncremento.ReadOnly = false;
+            this.colIncremento.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colIncremento.Width = 190;
             // 
-            // colNovedad
+            // colPuntos
             // 
-            this.colNovedad.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colNovedad.DataPropertyName = "Novedad";
-            this.colNovedad.HeaderText = "NOVEDAD";
-            this.colNovedad.Name = "colNovedad";
-            this.colNovedad.ReadOnly = true;
-            this.colNovedad.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colPuntos.DataPropertyName = "PuntosDesbloqueo";
+            this.colPuntos.HeaderText = "PUNTOS PARA ABRIR";
+            this.colPuntos.Name = "colPuntos";
+            this.colPuntos.ReadOnly = false;
+            this.colPuntos.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colPuntos.Width = 170;
             // 
-            // colActivo
+            // colRequisito
             // 
-            this.colActivo.DataPropertyName = "Activo";
-            this.colActivo.HeaderText = "ACTIVO";
-            this.colActivo.Name = "colActivo";
-            this.colActivo.ReadOnly = false;
-            this.colActivo.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colActivo.Width = 100;
+            this.colRequisito.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colRequisito.DataPropertyName = "Requisito";
+            this.colRequisito.HeaderText = "SE ABRE CON";
+            this.colRequisito.Name = "colRequisito";
+            this.colRequisito.ReadOnly = true;
+            this.colRequisito.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
-            // pnlTablaHistoria
+            // pnlTablaInfinito
             // 
-            this.pnlTablaHistoria.Controls.Add(this.dgvHistoria);
-            this.pnlTablaHistoria.BackColor = System.Drawing.Color.White;
-            this.pnlTablaHistoria.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlTablaHistoria.Name = "pnlTablaHistoria";
-            this.pnlTablaHistoria.Padding = new System.Windows.Forms.Padding(14);
+            this.pnlTablaInfinito.Controls.Add(this.dgvInfinito);
+            this.pnlTablaInfinito.BackColor = System.Drawing.Color.White;
+            this.pnlTablaInfinito.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlTablaInfinito.Name = "pnlTablaInfinito";
+            this.pnlTablaInfinito.Padding = new System.Windows.Forms.Padding(14);
             // 
-            // pnlTablaHistoriaBorde
+            // pnlTablaInfinitoBorde
             // 
-            this.pnlTablaHistoriaBorde.Controls.Add(this.pnlTablaHistoria);
-            this.pnlTablaHistoriaBorde.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(35)))), ((int)(((byte)(20)))));
-            this.pnlTablaHistoriaBorde.Location = new System.Drawing.Point(40, 110);
-            this.pnlTablaHistoriaBorde.Name = "pnlTablaHistoriaBorde";
-            this.pnlTablaHistoriaBorde.Padding = new System.Windows.Forms.Padding(2, 2, 2, 6);
-            this.pnlTablaHistoriaBorde.Size = new System.Drawing.Size(1120, 644);
+            this.pnlTablaInfinitoBorde.Controls.Add(this.pnlTablaInfinito);
+            this.pnlTablaInfinitoBorde.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(35)))), ((int)(((byte)(20)))));
+            this.pnlTablaInfinitoBorde.Location = new System.Drawing.Point(40, 110);
+            this.pnlTablaInfinitoBorde.Name = "pnlTablaInfinitoBorde";
+            this.pnlTablaInfinitoBorde.Padding = new System.Windows.Forms.Padding(2, 2, 2, 6);
+            this.pnlTablaInfinitoBorde.Size = new System.Drawing.Size(1120, 260);
             // 
             // lblNota
             // 
@@ -178,9 +170,9 @@
             this.lblNota.BackColor = System.Drawing.Color.Transparent;
             this.lblNota.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lblNota.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(118)))), ((int)(((byte)(92)))));
-            this.lblNota.Location = new System.Drawing.Point(56, 766);
+            this.lblNota.Location = new System.Drawing.Point(56, 384);
             this.lblNota.Name = "lblNota";
-            this.lblNota.Text = "Un nivel desactivado no aparece en la tablet. Objetivo 0 = nivel jefe.";
+            this.lblNota.Text = "Las celdas blancas se pueden editar. Fácil siempre está abierta. Para bloquear una dificultad a un niño concreto, abre su ficha y pulsa «Bloquear dificultades».";
             // 
             // FormModos
             // 
@@ -194,13 +186,13 @@
             this.Controls.Add(this.lblTitulo);
             this.Controls.Add(this.lblSubtitulo);
             this.Controls.Add(this.btnGuardar);
-            this.Controls.Add(this.pnlTablaHistoriaBorde);
+            this.Controls.Add(this.pnlTablaInfinitoBorde);
             this.Controls.Add(this.lblNota);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvHistoria)).EndInit();
-            this.pnlTablaHistoria.ResumeLayout(false);
-            this.pnlTablaHistoria.PerformLayout();
-            this.pnlTablaHistoriaBorde.ResumeLayout(false);
-            this.pnlTablaHistoriaBorde.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvInfinito)).EndInit();
+            this.pnlTablaInfinito.ResumeLayout(false);
+            this.pnlTablaInfinito.PerformLayout();
+            this.pnlTablaInfinitoBorde.ResumeLayout(false);
+            this.pnlTablaInfinitoBorde.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -211,16 +203,15 @@
         private System.Windows.Forms.Label lblTitulo;
         private System.Windows.Forms.Label lblSubtitulo;
         private System.Windows.Forms.Button btnGuardar;
-        private System.Windows.Forms.DataGridView dgvHistoria;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colNumero;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colZona;
+        private System.Windows.Forms.DataGridView dgvInfinito;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colNombre;
         private System.Windows.Forms.DataGridViewTextBoxColumn colAgujeros;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colObjetivo;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colTiempo;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colNovedad;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn colActivo;
-        private System.Windows.Forms.Panel pnlTablaHistoria;
-        private System.Windows.Forms.Panel pnlTablaHistoriaBorde;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colVidas;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colIncremento;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colPuntos;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colRequisito;
+        private System.Windows.Forms.Panel pnlTablaInfinito;
+        private System.Windows.Forms.Panel pnlTablaInfinitoBorde;
         private System.Windows.Forms.Label lblNota;
     }
 }

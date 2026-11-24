@@ -29,6 +29,7 @@
             this.lblRegistrado = new System.Windows.Forms.Label();
             this.lblSeQuedo = new System.Windows.Forms.Label();
             this.cmbModo = new System.Windows.Forms.ComboBox();
+            this.btnBloqueos = new System.Windows.Forms.Button();
             this.lblCardTitulo1 = new System.Windows.Forms.Label();
             this.lblCardValor1 = new System.Windows.Forms.Label();
             this.pnlCard1 = new System.Windows.Forms.Panel();
@@ -80,6 +81,15 @@
             this.pnlHistorial.SuspendLayout();
             this.pnlHistorialBorde.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // btnBloqueos
+            // 
+            this.btnBloqueos.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnBloqueos.Location = new System.Drawing.Point(740, 54);
+            this.btnBloqueos.Name = "btnBloqueos";
+            this.btnBloqueos.Size = new System.Drawing.Size(200, 34);
+            this.btnBloqueos.Text = "Bloquear dificultades";
+            this.btnBloqueos.Click += new System.EventHandler(this.btnBloqueos_Click);
             // 
             // lblVolver
             // 
@@ -497,6 +507,7 @@
             this.Controls.Add(this.lblRegistrado);
             this.Controls.Add(this.lblSeQuedo);
             this.Controls.Add(this.cmbModo);
+            this.Controls.Add(this.btnBloqueos);
             this.Controls.Add(this.pnlCard1Borde);
             this.Controls.Add(this.pnlCard2Borde);
             this.Controls.Add(this.pnlCard3Borde);
@@ -543,6 +554,7 @@
         private System.Windows.Forms.Label lblRegistrado;
         private System.Windows.Forms.Label lblSeQuedo;
         private System.Windows.Forms.ComboBox cmbModo;
+        private System.Windows.Forms.Button btnBloqueos;
         private System.Windows.Forms.Label lblCardTitulo1;
         private System.Windows.Forms.Label lblCardValor1;
         private System.Windows.Forms.Panel pnlCard1;

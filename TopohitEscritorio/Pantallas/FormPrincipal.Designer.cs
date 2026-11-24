@@ -80,7 +80,7 @@
             this.btnModos.Location = new System.Drawing.Point(16, 200);
             this.btnModos.Name = "btnModos";
             this.btnModos.Size = new System.Drawing.Size(208, 44);
-            this.btnModos.Text = "Modos y niveles";
+            this.btnModos.Text = "Dificultades";
             this.btnModos.UseVisualStyleBackColor = false;
             this.btnModos.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(35)))), ((int)(((byte)(20)))));
             this.btnModos.ForeColor = System.Drawing.Color.White;

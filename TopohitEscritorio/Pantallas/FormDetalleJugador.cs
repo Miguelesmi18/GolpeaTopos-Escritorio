@@ -36,6 +36,7 @@ namespace TopohitEscritorio.Pantallas
                 lblRegistrado.Text = lblRegistrado.Text + "  ·  dado de baja";
             }
             lblSeQuedo.Text = TextoSeQuedo();
+            Ui.BotonSecundario(btnBloqueos);     // CAMBIO 24/11
 
             cmbModo.Items.Add("Todos los modos");
             cmbModo.Items.Add("Historia");
@@ -177,6 +178,13 @@ namespace TopohitEscritorio.Pantallas
             }
             e.CellStyle.SelectionBackColor = e.CellStyle.BackColor;
             e.CellStyle.SelectionForeColor = e.CellStyle.ForeColor;
+        }
+
+        // CAMBIO 24/11: abre el diálogo para bloquear dificultades de Infinito a este jugador
+        private void btnBloqueos_Click(object sender, EventArgs e)
+        {
+            FormBloqueos dialogo = new FormBloqueos(jugador);
+            dialogo.ShowDialog(this);
         }
 
         private void lblVolver_Click(object sender, EventArgs e)

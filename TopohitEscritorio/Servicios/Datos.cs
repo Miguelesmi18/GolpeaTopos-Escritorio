@@ -271,10 +271,10 @@ namespace TopohitEscritorio.Modelos
             Contrarreloj.Add(new DificultadContrarreloj("Medio", 6, 60, 500, 1100, 900, 2));
             Contrarreloj.Add(new DificultadContrarreloj("Difícil", 9, 60, 800, 800, 600, 3));
 
-            // Infinito: nombre, agujeros, vidas, incremento
-            Infinito.Add(new DificultadInfinito("Fácil", 3, 5, 1));
-            Infinito.Add(new DificultadInfinito("Normal", 6, 3, 2));
-            Infinito.Add(new DificultadInfinito("Difícil", 9, 3, 3));
+            // Infinito: nombre, agujeros, vidas, incremento, orden y puntos para desbloquear (CAMBIO 24/11)
+            Infinito.Add(new DificultadInfinito("Fácil", 3, 5, 1, 1, 0));
+            Infinito.Add(new DificultadInfinito("Normal", 6, 3, 2, 2, 500));
+            Infinito.Add(new DificultadInfinito("Difícil", 9, 3, 3, 3, 800));
 
             Partidas.Reverse();     // de la más antigua a la más reciente, igual que las de la API
             CompletarUsuarios();
