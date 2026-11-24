@@ -8,7 +8,7 @@ namespace TopohitEscritorio
 {
     // Ventana principal: barra lateral a la izquierda y, a la derecha, la pantalla activa.
     // Cada pantalla es un formulario normal (FormJugadores, FormModos, FormEstadisticas,
-    // FormDetalleJugador) que se mete dentro de pnlContenido, como si fuera un control más.
+    // FormMetricas, FormDetalleJugador) que se mete dentro de pnlContenido, como si fuera un control más.
     public partial class FormPrincipal : Form
     {
         public FormPrincipal()
@@ -43,8 +43,8 @@ namespace TopohitEscritorio
         // El botón de la sección activa en naranja y su cuadradito en blanco
         private void MarcarBoton(Button activo)
         {
-            Button[] botones = { btnJugadores, btnModos, btnEstadisticas };
-            Panel[] iconos = { pnlIconoJugadores, pnlIconoModos, pnlIconoEstadisticas };
+            Button[] botones = { btnJugadores, btnModos, btnEstadisticas, btnMetricas };
+            Panel[] iconos = { pnlIconoJugadores, pnlIconoModos, pnlIconoEstadisticas, pnlIconoMetricas };
             for (int i = 0; i < botones.Length; i++)
             {
                 if (botones[i] == activo)
@@ -76,6 +76,12 @@ namespace TopohitEscritorio
             MostrarPantalla(new FormEstadisticas(this, abrirSeguimiento), btnEstadisticas);
         }
 
+        // CAMBIO 24/11: métricas de todos los jugadores y modelo de abandono (Python)
+        public void MostrarMetricas()
+        {
+            MostrarPantalla(new FormMetricas(), btnMetricas);
+        }
+
         // vieneDe: "Jugadores" o "Seguimiento", para que el enlace "←" vuelva al sitio correcto
         public void MostrarDetalle(Usuario jugador, string vieneDe)
         {
@@ -100,6 +106,11 @@ namespace TopohitEscritorio
         private void btnEstadisticas_Click(object sender, EventArgs e)
         {
             MostrarEstadisticas(false);
+        }
+
+        private void btnMetricas_Click(object sender, EventArgs e)
+        {
+            MostrarMetricas();
         }
 
         // Abre la ventana para cambiar la contraseña del usuario que ha entrado (modal)

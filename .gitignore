@@ -4,3 +4,6 @@ bin/
 obj/
 *.user
 *.suo
+
+# Python (pantalla Métricas)
+__pycache__/

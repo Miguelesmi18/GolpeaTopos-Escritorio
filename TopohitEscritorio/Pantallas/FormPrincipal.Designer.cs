@@ -30,6 +30,8 @@
             this.pnlIconoModos = new System.Windows.Forms.Panel();
             this.btnEstadisticas = new System.Windows.Forms.Button();
             this.pnlIconoEstadisticas = new System.Windows.Forms.Panel();
+            this.btnMetricas = new System.Windows.Forms.Button();
+            this.pnlIconoMetricas = new System.Windows.Forms.Panel();
             this.lblLogo = new System.Windows.Forms.Label();
             this.lblUsuarioActual = new System.Windows.Forms.Label();
             this.lblRolActual = new System.Windows.Forms.Label();
@@ -41,6 +43,7 @@
             this.pnlIconoJugadores.SuspendLayout();
             this.pnlIconoModos.SuspendLayout();
             this.pnlIconoEstadisticas.SuspendLayout();
+            this.pnlIconoMetricas.SuspendLayout();
             this.pnlUsuario.SuspendLayout();
             this.pnlBarra.SuspendLayout();
             this.pnlContenido.SuspendLayout();
@@ -121,6 +124,31 @@
             this.pnlIconoEstadisticas.Name = "pnlIconoEstadisticas";
             this.pnlIconoEstadisticas.Size = new System.Drawing.Size(16, 16);
             // 
+            // btnMetricas (CAMBIO 24/11)
+            // 
+            this.btnMetricas.Controls.Add(this.pnlIconoMetricas);
+            this.btnMetricas.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnMetricas.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnMetricas.FlatAppearance.BorderSize = 0;
+            this.btnMetricas.Location = new System.Drawing.Point(16, 300);
+            this.btnMetricas.Name = "btnMetricas";
+            this.btnMetricas.Size = new System.Drawing.Size(208, 44);
+            this.btnMetricas.Text = "Métricas";
+            this.btnMetricas.UseVisualStyleBackColor = false;
+            this.btnMetricas.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(35)))), ((int)(((byte)(20)))));
+            this.btnMetricas.ForeColor = System.Drawing.Color.White;
+            this.btnMetricas.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.btnMetricas.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnMetricas.Padding = new System.Windows.Forms.Padding(38, 0, 0, 0);
+            this.btnMetricas.Click += new System.EventHandler(this.btnMetricas_Click);
+            // 
+            // pnlIconoMetricas
+            // 
+            this.pnlIconoMetricas.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(140)))), ((int)(((byte)(40)))));
+            this.pnlIconoMetricas.Location = new System.Drawing.Point(14, 14);
+            this.pnlIconoMetricas.Name = "pnlIconoMetricas";
+            this.pnlIconoMetricas.Size = new System.Drawing.Size(16, 16);
+            // 
             // lblLogo
             // 
             this.lblLogo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(35)))), ((int)(((byte)(20)))));
@@ -197,6 +225,7 @@
             this.pnlBarra.Controls.Add(this.btnJugadores);
             this.pnlBarra.Controls.Add(this.btnModos);
             this.pnlBarra.Controls.Add(this.btnEstadisticas);
+            this.pnlBarra.Controls.Add(this.btnMetricas);
             this.pnlBarra.Controls.Add(this.lblLogo);
             this.pnlBarra.Controls.Add(this.pnlUsuario);
             this.pnlBarra.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(35)))), ((int)(((byte)(20)))));
@@ -230,6 +259,8 @@
             this.pnlIconoModos.PerformLayout();
             this.pnlIconoEstadisticas.ResumeLayout(false);
             this.pnlIconoEstadisticas.PerformLayout();
+            this.pnlIconoMetricas.ResumeLayout(false);
+            this.pnlIconoMetricas.PerformLayout();
             this.pnlUsuario.ResumeLayout(false);
             this.pnlUsuario.PerformLayout();
             this.pnlBarra.ResumeLayout(false);
@@ -249,6 +280,8 @@
         private System.Windows.Forms.Panel pnlIconoModos;
         private System.Windows.Forms.Button btnEstadisticas;
         private System.Windows.Forms.Panel pnlIconoEstadisticas;
+        private System.Windows.Forms.Button btnMetricas;
+        private System.Windows.Forms.Panel pnlIconoMetricas;
         private System.Windows.Forms.Label lblLogo;
         private System.Windows.Forms.Label lblUsuarioActual;
         private System.Windows.Forms.Label lblRolActual;

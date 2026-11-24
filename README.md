@@ -9,10 +9,42 @@ a la Web API ([ASP.NET-Core-Web-API-Topohit](https://github.com/TankistyT80/ASP.
 - **Dificultades**: vidas, aceleración y puntos para desbloquear cada dificultad de Infinito.
 - **Estadísticas**: General (aciertos, errores y tiempo de reacción por modo y nivel) y Seguimiento (avisos por niño).
 - **Detalle del jugador**: tarjetas, gráfico e historial de partidas de cada usuario.
+- **Métricas**: métricas de todos los jugadores, gráficas y modelo de abandono, calculados con Python.
 
 ## Cómo arrancarla
 1. Arranca la API (perfil http, puerto 5110). La dirección está en `Servicios/Api.cs` (`DIRECCION`).
 2. Abre `TopohitEscritorio.sln` en Visual Studio y ejecuta.
+
+## Cambios del 24/11/2026 (2) · pantalla Métricas (reto «Mètriques dels jocs»)
+
+- **Barra lateral → Métricas** (`FormMetricas`). Enseña las métricas de **todos** los jugadores de Infinito y el modelo
+  que predice si un niño volverá a jugar. Las de cada niño están en su tablet (Perfil → Mis estadísticas).
+- Cómo funciona (`Servicios/Metricas.cs`):
+  1. Pide las partidas a la API (`GET api/sesiones/todas`) y las guarda en un JSON en la carpeta temporal.
+  2. Ejecuta `Python/metricas_escritorio.py`, que se copia junto al `.exe`.
+  3. El script deja 11 gráficas en PNG y `resultado.json` con 15 tarjetas.
+  4. Haciendo clic en una gráfica se ve en grande.
+- `Python/analisis.py` es una **copia** de `Topohit-Android-/metricas/03_analisis.py`: si se cambia uno, hay que
+  cambiar el otro.
+- **Datos del modelo:** las métricas y gráficas salen de las partidas **reales**. El modelo necesita muchos jugadores:
+  mientras haya menos de 50 reales, se entrena con las 400 sesiones simuladas (`Python/sesiones_simuladas.csv`).
+  La tarjeta «Modelo entrenado con» dice cuáles se han usado.
+- **Hace falta Python** en el ordenador, con las librerías del proyecto:
+
+  ```
+  cd TopohitEscritorio/Python
+  python -m pip install -r requirements.txt
+  ```
+
+  Si en vuestro PC Python no se llama `python` (por ejemplo `py`), cambiad `PYTHON` en `Servicios/Metricas.cs`.
+  Si falta Python o alguna librería, la pantalla lo dice.
+- Archivos nuevos:
+  - `Pantallas/FormMetricas.cs` y `FormMetricas.Designer.cs`;
+  - `Servicios/Metricas.cs`;
+  - `Modelos/ResultadoMetricas.cs`;
+  - la carpeta `Python/`.
+
+  También cambian `Api.GetTodasSesionesJson` y el botón **Métricas** de `FormPrincipal`.
 
 ## Cambios del 24/11/2026 · solo modo Infinito, puntos de desbloqueo y bloqueos del tutor
 - El juego **solo tiene Infinito**. La pantalla «Modos y niveles» pasa a ser **Dificultades** (`FormModos`): una tabla

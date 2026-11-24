@@ -209,6 +209,19 @@ namespace TopohitEscritorio.Servicios
             return await response.Content.ReadFromJsonAsync<List<SesionApi>>();
         }
 
+        // CAMBIO 24/11: lo mismo, pero el JSON tal cual llega de la API. La pantalla Métricas se lo pasa
+        // al script de Python, que lo lee con pandas. Devuelve null si falla (el motivo, en UltimoError).
+        public static async Task<string> GetTodasSesionesJson()
+        {
+            HttpResponseMessage response = await client.GetAsync("api/sesiones/todas");
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                await GuardarError(response);
+                return null;
+            }
+            return await response.Content.ReadAsStringAsync();
+        }
+
         // ---------- Configuración de los modos ----------
 
         public static async Task<List<NivelHistoria>> GetNiveles()

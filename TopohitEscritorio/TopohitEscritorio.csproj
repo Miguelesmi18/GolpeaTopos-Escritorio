@@ -61,6 +61,7 @@
     <Compile Include="Modelos\ModelosApi.cs" />
     <Compile Include="Modelos\NivelHistoria.cs" />
     <Compile Include="Modelos\Partida.cs" />
+    <Compile Include="Modelos\ResultadoMetricas.cs" />
     <Compile Include="Modelos\Usuario.cs" />
     <Compile Include="Pantallas\FormBloqueos.cs">
       <SubType>Form</SubType>
@@ -116,6 +117,12 @@
     <Compile Include="Pantallas\FormDetalleJugador.Designer.cs">
       <DependentUpon>FormDetalleJugador.cs</DependentUpon>
     </Compile>
+    <Compile Include="Pantallas\FormMetricas.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Pantallas\FormMetricas.Designer.cs">
+      <DependentUpon>FormMetricas.cs</DependentUpon>
+    </Compile>
     <Compile Include="Pantallas\Ui.cs" />
     <Compile Include="Servicios\Calculos.cs" />
     <Compile Include="Program.cs" />
@@ -123,6 +130,7 @@
     <Compile Include="Servicios\Api.cs" />
     <Compile Include="Servicios\Cifrado.cs" />
     <Compile Include="Servicios\Datos.cs" />
+    <Compile Include="Servicios\Metricas.cs" />
     <EmbeddedResource Include="Pantallas\FormEditarJugador.resx">
       <DependentUpon>FormEditarJugador.cs</DependentUpon>
     </EmbeddedResource>
@@ -156,6 +164,21 @@
     <None Include="Imagenes\topo_normal.png" />
     <None Include="Imagenes\topo_halloween.png" />
     <None Include="Imagenes\topo_navidad.png" />
+  </ItemGroup>
+  <!-- CAMBIO 24/11: el Python de la pantalla Métricas. Se copia junto al .exe (carpeta Python) -->
+  <ItemGroup>
+    <Content Include="Python\metricas_escritorio.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Python\analisis.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Python\sesiones_simuladas.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Python\requirements.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <!-- CAMBIO 19/11: los 12 avatares (tabla AVATAR). Son copia de Android/app/src/main/res/drawable-nodpi
        y se copian junto al .exe (bin\Debug\Imagenes\Avatares) para que Ui.Avatar los encuentre. -->
