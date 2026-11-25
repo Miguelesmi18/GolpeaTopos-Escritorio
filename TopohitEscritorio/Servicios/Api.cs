@@ -224,27 +224,7 @@ namespace TopohitEscritorio.Servicios
 
         // ---------- Configuración de los modos ----------
 
-        public static async Task<List<NivelHistoria>> GetNiveles()
-        {
-            HttpResponseMessage response = await client.GetAsync("api/modos/historia");
-            if (response.StatusCode != HttpStatusCode.OK)
-            {
-                await GuardarError(response);
-                return null;
-            }
-            return await response.Content.ReadFromJsonAsync<List<NivelHistoria>>();
-        }
-
-        public static async Task<List<DificultadContrarreloj>> GetContrarreloj()
-        {
-            HttpResponseMessage response = await client.GetAsync("api/modos/contrarreloj");
-            if (response.StatusCode != HttpStatusCode.OK)
-            {
-                await GuardarError(response);
-                return null;
-            }
-            return await response.Content.ReadFromJsonAsync<List<DificultadContrarreloj>>();
-        }
+        // CAMBIO 24/11: api/modos/historia y api/modos/contrarreloj ya no existen
 
         public static async Task<List<DificultadInfinito>> GetInfinito()
         {
@@ -267,13 +247,6 @@ namespace TopohitEscritorio.Servicios
                 return null;
             }
             return await response.Content.ReadFromJsonAsync<List<AvatarApi>>();
-        }
-
-        // PUT api/modos/historia/{numero}: activar o desactivar un nivel. true si se ha guardado (200)
-        public static async Task<bool> GuardarNivel(NivelHistoria n)
-        {
-            HttpResponseMessage response = await client.PutAsJsonAsync("api/modos/historia/" + n.Numero, n);
-            return await ComprobarOk(response);
         }
 
         // ---------- CAMBIO 24/11: dificultades de Infinito y bloqueos ----------

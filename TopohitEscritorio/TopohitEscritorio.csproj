@@ -54,12 +54,10 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Modelos\DificultadContrarreloj.cs" />
     <Compile Include="Modelos\BloqueoPeticion.cs" />
     <Compile Include="Modelos\DificultadInfinito.cs" />
     <Compile Include="Modelos\EstadoDificultad.cs" />
     <Compile Include="Modelos\ModelosApi.cs" />
-    <Compile Include="Modelos\NivelHistoria.cs" />
     <Compile Include="Modelos\Partida.cs" />
     <Compile Include="Modelos\ResultadoMetricas.cs" />
     <Compile Include="Modelos\Usuario.cs" />

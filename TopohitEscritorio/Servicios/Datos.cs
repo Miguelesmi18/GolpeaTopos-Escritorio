@@ -13,8 +13,6 @@ namespace TopohitEscritorio.Modelos
     {
         public static List<Usuario> Usuarios = new List<Usuario>();
         public static List<Partida> Partidas = new List<Partida>();
-        public static List<NivelHistoria> NivelesHistoria = new List<NivelHistoria>();
-        public static List<DificultadContrarreloj> Contrarreloj = new List<DificultadContrarreloj>();
         public static List<DificultadInfinito> Infinito = new List<DificultadInfinito>();
         public static List<AvatarApi> Avatares = new List<AvatarApi>();   // CAMBIO 19/11: los 12 avatares
         public static Usuario UsuarioActual = null;   // el educador o admin que ha iniciado sesión
@@ -30,8 +28,6 @@ namespace TopohitEscritorio.Modelos
         {
             Usuarios.Clear();
             Partidas.Clear();
-            NivelesHistoria.Clear();
-            Contrarreloj.Clear();
             Infinito.Clear();
             Avatares.Clear();
         }
@@ -72,18 +68,6 @@ namespace TopohitEscritorio.Modelos
                 throw new Exception(Api.UltimoError);
             }
 
-            List<NivelHistoria> niveles = await Api.GetNiveles();
-            if (niveles == null)
-            {
-                throw new Exception(Api.UltimoError);
-            }
-
-            List<DificultadContrarreloj> contrarreloj = await Api.GetContrarreloj();
-            if (contrarreloj == null)
-            {
-                throw new Exception(Api.UltimoError);
-            }
-
             List<DificultadInfinito> infinito = await Api.GetInfinito();
             if (infinito == null)
             {
@@ -119,8 +103,8 @@ namespace TopohitEscritorio.Modelos
                 Usuarios.Add(u);
             }
 
-            // CAMBIO 24/11: el juego solo tiene el modo Infinito. Las partidas antiguas de Historia y
-            // Contrarreloj siguen en la base de datos, pero el escritorio ya no las enseña.
+            // CAMBIO 24/11: el juego solo tiene el modo Infinito (Historia y Contrarreloj se han quitado
+            // también de la base de datos). Se filtra igualmente por si la API devolviera otro modo.
             foreach (SesionApi s in sesiones)
             {
                 if (s.Modo == "Infinito")
@@ -129,8 +113,6 @@ namespace TopohitEscritorio.Modelos
                 }
             }
 
-            NivelesHistoria.AddRange(niveles);
-            Contrarreloj.AddRange(contrarreloj);
             Infinito.AddRange(infinito);
 
             if (avatares != null && avatares.Count > 0)
@@ -183,12 +165,8 @@ namespace TopohitEscritorio.Modelos
             p.SessionId = s.SessionId.ToString();
             p.NombreUsuario = s.Username;
             p.Fecha = s.DateTime;
-            p.Modo = s.Modo.ToLower();   // "Historia" -> "historia", para que funcionen los filtros
-            if (s.LevelReached != null)
-            {
-                p.Nivel = s.LevelReached.ToString();
-            }
-            else if (s.Difficulty != null)
+            p.Modo = s.Modo.ToLower();   // "Infinito" -> "infinito"
+            if (s.Difficulty != null)
             {
                 p.Nivel = s.Difficulty;
             }
@@ -258,23 +236,6 @@ namespace TopohitEscritorio.Modelos
             Partidas.Add(new Partida("a3f2", "hugo_p", new DateTime(2026, 11, 3, 17, 12, 0), "infinito", "Fácil", 60, 260, 26, 5, 14, 820, false));
             Partidas.Add(new Partida("a3f1", "aitana_l", new DateTime(2026, 11, 3, 16, 50, 0), "infinito", "Fácil", 52, 190, 19, 5, 15, 650, false));
             Partidas.Add(new Partida("a3f0", "lucia_g", new DateTime(2026, 11, 3, 16, 31, 0), "infinito", "Fácil", 33, 150, 15, 2, 6, 700, true));
-
-            // Niveles de Historia: número, zona, agujeros, objetivo, tiempo, novedad
-            NivelesHistoria.Add(new NivelHistoria(1, "Campo", 3, 150, 45, "Solo topos normales"));
-            NivelesHistoria.Add(new NivelHistoria(2, "Campo", 3, 200, 45, ""));
-            NivelesHistoria.Add(new NivelHistoria(3, "Campo", 3, 250, 45, "Aparece el topo dorado"));
-            NivelesHistoria.Add(new NivelHistoria(4, "Huerto", 6, 300, 45, "Entra el topo enfadado"));
-            NivelesHistoria.Add(new NivelHistoria(5, "Huerto", 6, 400, 45, ""));
-            NivelesHistoria.Add(new NivelHistoria(6, "Huerto", 6, 450, 45, "Entran las bombas"));
-            NivelesHistoria.Add(new NivelHistoria(7, "Huerto", 6, 500, 50, ""));
-            NivelesHistoria.Add(new NivelHistoria(8, "Mina", 9, 600, 50, "9 agujeros"));
-            NivelesHistoria.Add(new NivelHistoria(9, "Mina", 9, 700, 50, "Velocidad de Difícil"));
-            NivelesHistoria.Add(new NivelHistoria(10, "Mina", 9, 0, 60, "JEFE: topo gigante, 10 golpes"));
-
-            // Contrarreloj: nombre, agujeros, tiempo, objetivo, visible (ms), sale cada (ms), topos a la vez
-            Contrarreloj.Add(new DificultadContrarreloj("Fácil", 3, 60, 300, 1500, 1200, 1));
-            Contrarreloj.Add(new DificultadContrarreloj("Medio", 6, 60, 500, 1100, 900, 2));
-            Contrarreloj.Add(new DificultadContrarreloj("Difícil", 9, 60, 800, 800, 600, 3));
 
             // Infinito: nombre, agujeros, vidas, incremento, orden y puntos para desbloquear (CAMBIO 24/11)
             Infinito.Add(new DificultadInfinito("Fácil", 3, 5, 1, 1, 0));

@@ -36,7 +36,7 @@ namespace TopohitEscritorio.Servicios
     // Todos los cálculos de las estadísticas. Trabajan con las listas de Datos
     // (que ya vienen de la API) usando foreach, como en clase.
     // CAMBIO 24/11: el juego solo tiene el modo Infinito. Datos solo guarda sus partidas
-    // (las antiguas de Historia y Contrarreloj siguen en la base de datos, pero no se enseñan).
+    // (Historia y Contrarreloj se han quitado también de la base de datos).
     public static class Calculos
     {
         // Criterios de aviso (pestaña Seguimiento). Ya no son const: el admin los cambia desde

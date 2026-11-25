@@ -6,7 +6,7 @@ namespace TopohitEscritorio.Modelos
     // Clases "espejo" del JSON que envía y recibe la API.
     // Los nombres de las propiedades tienen que coincidir con las claves del JSON
     // (da igual mayúsculas o minúsculas: ReadFromJsonAsync no las distingue).
-    // NivelHistoria, DificultadContrarreloj y DificultadInfinito no están aquí:
+    // DificultadInfinito no está aquí:
     // la API usa los mismos nombres, así que reutilizamos nuestras clases.
 
     // Lo que enviamos a POST api/auth/login
@@ -86,7 +86,6 @@ namespace TopohitEscritorio.Modelos
         public int ErrorsMade { get; set; }
         public int FinalScore { get; set; }
         public string Difficulty { get; set; }
-        public int? LevelReached { get; set; }
         public int NAttempts { get; set; }
         public int MolesEscaped { get; set; }
         public int Hits { get; set; }
