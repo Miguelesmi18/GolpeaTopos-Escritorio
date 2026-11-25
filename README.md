@@ -7,7 +7,7 @@ a la Web API ([ASP.NET-Core-Web-API-Topohit](https://github.com/TankistyT80/ASP.
 - **Login**: solo entran los roles `admin` y `educador`. Si la API no responde, ofrece un modo demo con datos de ejemplo.
 - **Jugadores**: lista de usuarios. El admin puede crear, editar y eliminar; el educador solo puede ver.
 - **Dificultades**: vidas, aceleración y puntos para desbloquear cada dificultad de Infinito.
-- **Estadísticas**: General (aciertos, errores y tiempo de reacción por modo y nivel) y Seguimiento (avisos por niño).
+- **Estadísticas**: General (aciertos, errores y tiempo de reacción por dificultad) y Seguimiento (avisos por niño).
 - **Detalle del jugador**: tarjetas, gráfico e historial de partidas de cada usuario.
 - **Métricas**: métricas de todos los jugadores, gráficas y modelo de abandono, calculados con Python.
 
@@ -15,10 +15,20 @@ a la Web API ([ASP.NET-Core-Web-API-Topohit](https://github.com/TankistyT80/ASP.
 1. Arranca la API (perfil http, puerto 5110). La dirección está en `Servicios/Api.cs` (`DIRECCION`).
 2. Abre `TopohitEscritorio.sln` en Visual Studio y ejecuta.
 
+## Cambios del 24/11/2026 (4) · sin Historia ni Contrarreloj
+
+- La API y la base de datos ya no tienen Historia ni Contrarreloj (`10_quitar_historia_contrarreloj.sql`): se han
+  borrado sus partidas, sus tablas y `level_reached`.
+- Se quitan `Modelos/NivelHistoria.cs`, `Modelos/DificultadContrarreloj.cs`, `Api.GetNiveles`, `Api.GetContrarreloj`,
+  `Api.GuardarNivel`, `SesionApi.LevelReached` y los datos de ejemplo de esos modos en el modo demo.
+- **Hay que actualizar la API y el escritorio a la vez**: el escritorio anterior a este cambio no carga con la API
+  nueva, porque pedía `api/modos/historia` (que ya no existe).
+- Probado el 25/11: Jugadores, Estadísticas (General y Seguimiento) y Métricas con las 30 partidas de Infinito.
+
 ## Cambios del 24/11/2026 (3) · las estadísticas solo enseñan el modo Infinito
 
-- `Datos` **solo carga las partidas de Infinito**. Las antiguas de Historia y Contrarreloj siguen en la base de datos,
-  pero el escritorio ya no las enseña. El modo demo también tiene solo partidas de Infinito.
+- `Datos` **solo carga las partidas de Infinito**. (Las antiguas de Historia y Contrarreloj se borraron después de la
+  base de datos: ver (4).) El modo demo también tiene solo partidas de Infinito.
 - **Estadísticas · General**:
   - el desplegable de modos desaparece; queda el de dificultad (todas, Fácil, Normal o Difícil);
   - las gráficas y el **resumen** son **por dificultad**, con una fila «Total».
@@ -74,8 +84,8 @@ a la Web API ([ASP.NET-Core-Web-API-Topohit](https://github.com/TankistyT80/ASP.
 - **Ficha del jugador → «Bloquear dificultades»** (`FormBloqueos`, con `ShowDialog`): una casilla por dificultad,
   el motivo que verá el niño y cómo está ahora (abierta, le faltan X puntos, bloqueada por el tutor).
   Usa `GET/PUT/DELETE api/jugadores/{id}/bloqueos/{dificultad}`.
-- Necesita la API del 24/11 y `07_solo_infinito.sql`. Las estadísticas siguen enseñando las partidas antiguas de
-  Historia y Contrarreloj (están en la base de datos).
+- Necesita la API del 24/11 y `07_solo_infinito.sql`. Desde (3) y (4) ya no hay partidas de Historia ni
+  Contrarreloj.
 - Archivos nuevos: `Pantallas/FormBloqueos.cs` (+ `.Designer.cs`), `Modelos/EstadoDificultad.cs`, `Modelos/BloqueoPeticion.cs`.
 
 ## Cambios del 19/11/2026 · avatar de cada usuario
