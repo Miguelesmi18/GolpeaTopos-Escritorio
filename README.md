@@ -3,6 +3,16 @@
 Panel para educadoras y administradores del juego Topohit. Windows Forms (.NET Framework 4.8) que se conecta
 a la Web API ([ASP.NET-Core-Web-API-Topohit](https://github.com/TankistyT80/ASP.NET-Core-Web-API-Topohit)) con `HttpClient`.
 
+## Cambios del 25/11/2026 · la ventana cabe en portátiles con escalado
+
+- Las pantallas están diseñadas a 1440 × 900. En un portátil de 1920 × 1080 al 125 % (1536 × 864) la ventana no cabía en altura.
+- Ahora, si no cabe, `FormPrincipal` se hace más baja (lo que deja libre la barra de tareas), el bloque del usuario de la barra
+  lateral baja con ella y la pantalla activa va con **barra de desplazamiento**. Si cabe, todo sigue igual que antes.
+- La rueda del ratón mueve la pantalla (`IMessageFilter`), salvo encima de una tabla con filas ocultas, que se mueve ella.
+- Los avatares de Jugadores y Seguimiento ya salen bien: era la API, que no enviaba `avatarId` (arreglado en la API el 25/11).
+- Probado en 1920 × 1080 al 125 %: Jugadores y Estadísticas (General) hasta abajo con la barra. La rueda no se pudo probar
+  con el ratón simulado (Windows no entrega la rueda falsa); hay que comprobarla con un ratón de verdad.
+
 ## Pantallas
 - **Login**: solo entran los roles `admin` y `educador`. Si la API no responde, ofrece un modo demo con datos de ejemplo.
 - **Jugadores**: lista de usuarios. El admin puede crear, editar y eliminar; el educador solo puede ver.
