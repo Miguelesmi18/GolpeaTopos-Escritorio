@@ -69,7 +69,9 @@ a la Web API ([ASP.NET-Core-Web-API-Topohit](https://github.com/TankistyT80/ASP.
 - **Datos del modelo:** las métricas y gráficas salen de las partidas **reales**. El modelo necesita muchos jugadores:
   mientras haya menos de 50 reales, se entrena con las 400 sesiones simuladas (`Python/sesiones_simuladas.csv`).
   La tarjeta «Modelo entrenado con» dice cuáles se han usado.
-- **Hace falta Python** en el ordenador, con las librerías del proyecto:
+- **Hace falta Python** en el ordenador, con las librerías del proyecto. Lo más fácil: doble clic en
+  **`instalar_librerias.bat`** (en esta carpeta): instala Python 3.13 con winget si no está, las librerías y comprueba
+  que se cargan. A mano:
 
   ```
   cd TopohitEscritorio/Python
